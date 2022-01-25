@@ -50,8 +50,8 @@ public class FollowingPresenter {
 
     public void loadMoreItems(User user) {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-            isLoading = true;
-            view.setLoadingStatus(true);
+            setLoading(true);
+            view.setLoadingStatus(isLoading());
             followService.getFollowing(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollowee, new GetFollowingObserver());
         }
     }
@@ -60,8 +60,8 @@ public class FollowingPresenter {
 
         @Override
         public void handleSuccess(List<User> followees, boolean hasMorePages) {
-            isLoading = false;
-            view.setLoadingStatus(false);
+            setLoading(false);
+            view.setLoadingStatus(isLoading());
             lastFollowee = (followees.size() > 0) ? followees.get(followees.size() - 1) : null;
             setHasMorePages(hasMorePages);
             view.addFollowees(followees);
@@ -69,15 +69,15 @@ public class FollowingPresenter {
 
         @Override
         public void handleFailure(String message) {
-            isLoading = false;
-            view.setLoadingStatus(false);
+            setLoading(false);
+            view.setLoadingStatus(isLoading());
             view.displayErrorMessage("Failed to get following: " + message);
         }
 
         @Override
         public void handleException(Exception exception) {
             isLoading = false;
-            view.setLoadingStatus(false);
+            view.setLoadingStatus(isLoading());
             view.displayErrorMessage("Failed to get following because of exception: " + exception.getMessage());
         }
     }

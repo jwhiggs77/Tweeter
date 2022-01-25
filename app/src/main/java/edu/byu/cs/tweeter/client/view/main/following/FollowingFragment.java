@@ -69,6 +69,8 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
 
         user = (User) getArguments().getSerializable(USER_KEY);
 
+        presenter = new FollowingPresenter(this);
+
         RecyclerView followingRecyclerView = view.findViewById(R.id.followingRecyclerView);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
@@ -79,8 +81,8 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
 
         followingRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
 
-        presenter = new FollowingPresenter(this);
         presenter.loadMoreItems(user);
+
         return view;
     }
 
@@ -105,7 +107,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
     }
 
     @Override
-    public void startActivity() {
+    public void startActivity(User user) {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
         startActivity(intent);

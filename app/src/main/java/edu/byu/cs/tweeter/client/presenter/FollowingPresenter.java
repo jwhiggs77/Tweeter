@@ -14,7 +14,7 @@ public class FollowingPresenter {
         void displayErrorMessage(String message);
         void setLoadingStatus(boolean value);
         void addFollowees(List<User> followees);
-        void startActivity();
+        void startActivity(User user);
     }
 
     private View view;
@@ -85,8 +85,8 @@ public class FollowingPresenter {
     private class GetUserObserver implements UserService.GetUserObserver {
 
         @Override
-        public void handleSuccess() {
-            view.startActivity();
+        public void handleSuccess(User user) {
+            view.startActivity(user);
         }
 
         @Override

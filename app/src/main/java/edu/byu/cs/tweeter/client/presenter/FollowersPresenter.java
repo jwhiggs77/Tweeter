@@ -12,7 +12,7 @@ public class FollowersPresenter {
     public interface View {
         void displayErrorMessage(String message);
         void setLoadingStatus(boolean value);
-        void addFollowees(List<User> followers);
+        void addFollowers(List<User> followers);
     }
 
     private View view;
@@ -48,7 +48,7 @@ public class FollowersPresenter {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
             isLoading = true;
             view.setLoadingStatus(true);
-            followService.getFollowers(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollower, new GetFollowersObserver());
+            followService.getFollowers(Cache.getInstance().getCurrUserAuthToken(), Cache.getInstance().getCurrUser(), PAGE_SIZE, lastFollower, new GetFollowersObserver());
         }
     }
 
@@ -60,7 +60,7 @@ public class FollowersPresenter {
             view.setLoadingStatus(false);
             lastFollower = (followers.size() > 0) ? followers.get(followers.size() - 1) : null;
             setHasMorePages(hasMorePages);
-            view.addFollowees(followers);
+            view.addFollowers(followers);
         }
 
         @Override

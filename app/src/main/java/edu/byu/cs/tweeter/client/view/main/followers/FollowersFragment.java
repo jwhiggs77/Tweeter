@@ -28,7 +28,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import edu.byu.cs.client.R;
-import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowersTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetUserTask;
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.presenter.FollowersPresenter;
@@ -38,15 +37,13 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Implements the "Followers" tab.
  */
-public class FollowersFragment extends Fragment {
+public class FollowersFragment extends Fragment implements FollowersPresenter.View {
 
     private static final String LOG_TAG = "FollowersFragment";
     private static final String USER_KEY = "UserKey";
 
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
-
-    private static final int PAGE_SIZE = 10;
 
     private User user;
 
@@ -76,8 +73,9 @@ public class FollowersFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_followers, container, false);
 
-        //noinspection ConstantConditions
+        //noinspection Constant Conditions
         user = (User) getArguments().getSerializable(USER_KEY);
+        presenter = new FollowersPresenter(this);
 
         RecyclerView followersRecyclerView = view.findViewById(R.id.followersRecyclerView);
 
@@ -89,7 +87,29 @@ public class FollowersFragment extends Fragment {
 
         followersRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
 
+        presenter.loadMoreItems(user);
+
         return view;
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setLoadingStatus(boolean value) {
+        if (value) {
+            followersRecyclerViewAdapter.addLoadingFooter();
+        }
+        else {
+            followersRecyclerViewAdapter.removeLoadingFooter();
+        }
+    }
+
+    @Override
+    public void addFollowers(List<User> followers) {
+        followersRecyclerViewAdapter.addItems(followers);
     }
 
     /**
@@ -284,15 +304,6 @@ public class FollowersFragment extends Fragment {
          * data.
          */
         void loadMoreItems() {
-//            if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-//                isLoading = true;
-//                addLoadingFooter();
-//
-//                GetFollowersTask getFollowersTask = new GetFollowersTask(Cache.getInstance().getCurrUserAuthToken(),
-//                        user, PAGE_SIZE, lastFollower, new GetFollowersHandler());
-//                ExecutorService executor = Executors.newSingleThreadExecutor();
-//                executor.execute(getFollowersTask);
-//            }
             presenter.loadMoreItems(user);
         }
 

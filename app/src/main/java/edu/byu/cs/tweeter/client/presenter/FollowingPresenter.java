@@ -14,7 +14,7 @@ public class FollowingPresenter {
         void displayErrorMessage(String message);
         void setLoadingStatus(boolean value);
         void addFollowees(List<User> followees);
-        void startActivity();
+        void startActivity(User user);
     }
 
     private View view;
@@ -76,7 +76,7 @@ public class FollowingPresenter {
 
         @Override
         public void handleException(Exception exception) {
-            isLoading = false;
+            setLoading(false);
             view.setLoadingStatus(isLoading());
             view.displayErrorMessage("Failed to get following because of exception: " + exception.getMessage());
         }
@@ -85,8 +85,8 @@ public class FollowingPresenter {
     private class GetUserObserver implements UserService.GetUserObserver {
 
         @Override
-        public void handleSuccess() {
-            view.startActivity();
+        public void handleSuccess(User user) {
+            view.startActivity(user);
         }
 
         @Override

@@ -14,7 +14,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class UserService {
     public interface GetUserObserver {
-        void handleSuccess();
+        void handleSuccess(User user);
         void handleException(Exception ex);
         void handleMessage(String message);
 
@@ -26,8 +26,6 @@ public class UserService {
                 userAlias, new GetUserHandler(getUserObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(getUserTask);
-
-//        Toast.makeText(getContext(), "Getting user's profile...", Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -45,7 +43,7 @@ public class UserService {
             boolean success = msg.getData().getBoolean(GetUserTask.SUCCESS_KEY);
             if (success) {
                 User user = (User) msg.getData().getSerializable(GetUserTask.USER_KEY);
-                observer.handleSuccess();
+                observer.handleSuccess(user);
             } else if (msg.getData().containsKey(GetUserTask.MESSAGE_KEY)) {
                 String message = msg.getData().getString(GetUserTask.MESSAGE_KEY);
                 observer.handleMessage(message);

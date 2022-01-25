@@ -106,7 +106,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
     }
 
     @Override
-    public void startActivity() {
+    public void startActivity(User user) {
         Intent intent = new Intent(getContext(), MainActivity.class);
         intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
         startActivity(intent);
@@ -160,8 +160,6 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
     private class FollowingRecyclerViewAdapter extends RecyclerView.Adapter<FollowingHolder> {
 
         private final List<User> users = new ArrayList<>();
-
-//        private boolean isLoading = false;
 
         /**
          * Adds new users to the list from which the RecyclerView retrieves the users it displays

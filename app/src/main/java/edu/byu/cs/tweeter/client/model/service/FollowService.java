@@ -71,10 +71,10 @@ public class FollowService {
     }
 
     public void getFollowers(AuthToken currUserAuthToken, User user, int pageSize, User lastFollowee, GetFollowersObserver getFollowersObserver) {
-        GetFollowingTask getFollowingTask = new GetFollowingTask(currUserAuthToken,
+        GetFollowersTask getFollowersTask = new GetFollowersTask(currUserAuthToken,
                 user, pageSize, lastFollowee, new GetFollowersHandler(getFollowersObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(getFollowingTask);
+        executor.execute(getFollowersTask);
     }
 
     /**

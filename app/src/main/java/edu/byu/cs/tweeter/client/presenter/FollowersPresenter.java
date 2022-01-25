@@ -12,7 +12,7 @@ public class FollowersPresenter {
     public interface View {
         void displayErrorMessage(String message);
         void setLoadingStatus(boolean value);
-        void addFollowees(List<User> followers);
+        void addFollowers(List<User> followers);
     }
 
     private View view;
@@ -46,9 +46,12 @@ public class FollowersPresenter {
 
     public void loadMoreItems(User user) {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-            isLoading = true;
-            view.setLoadingStatus(true);
+            setLoading(true);
+
+            view.setLoadingStatus(isLoading);
             followService.getFollowers(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollower, new GetFollowersObserver());
+
+
         }
     }
 
@@ -56,24 +59,24 @@ public class FollowersPresenter {
 
         @Override
         public void handleSuccess(List<User> followers, boolean hasMorePages) {
-            isLoading = false;
-            view.setLoadingStatus(false);
+            setLoading(false);
+            view.setLoadingStatus(isLoading);
             lastFollower = (followers.size() > 0) ? followers.get(followers.size() - 1) : null;
             setHasMorePages(hasMorePages);
-            view.addFollowees(followers);
+            view.addFollowers(followers);
         }
 
         @Override
         public void handleFailure(String message) {
-            isLoading = false;
-            view.setLoadingStatus(false);
+            setLoading(false);
+            view.setLoadingStatus(isLoading);
             view.displayErrorMessage("Failed to get following: " + message);
         }
 
         @Override
         public void handleException(Exception exception) {
-            isLoading = false;
-            view.setLoadingStatus(false);
+            setLoading(false);
+            view.setLoadingStatus(isLoading);
             view.displayErrorMessage("Failed to get following because of exception: " + exception.getMessage());
         }
     }

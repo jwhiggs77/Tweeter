@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 
+import edu.byu.cs.tweeter.client.presenter.FollowingPresenter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * Implements the "Followers" tab.
  */
-public class FollowersFragment extends Fragment {
+public class FollowersFragment extends Fragment implements FollowersPresenter.View {
 
     private static final String LOG_TAG = "FollowersFragment";
     private static final String USER_KEY = "UserKey";
@@ -78,6 +79,7 @@ public class FollowersFragment extends Fragment {
 
         //noinspection ConstantConditions
         user = (User) getArguments().getSerializable(USER_KEY);
+        presenter = new FollowersPresenter(this);
 
         RecyclerView followersRecyclerView = view.findViewById(R.id.followersRecyclerView);
 
@@ -88,8 +90,29 @@ public class FollowersFragment extends Fragment {
         followersRecyclerView.setAdapter(followersRecyclerViewAdapter);
 
         followersRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
+        presenter.loadMoreItems(user);
 
         return view;
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void setLoadingStatus(boolean value) {
+        if (value) {
+            followersRecyclerViewAdapter.addLoadingFooter();
+        }
+        else {
+            followersRecyclerViewAdapter.removeLoadingFooter();
+        }
+    }
+
+    @Override
+    public void addFollowers(List<User> followers) {
+        followersRecyclerViewAdapter.addItems(followers);
     }
 
     /**
@@ -174,14 +197,14 @@ public class FollowersFragment extends Fragment {
         private User lastFollower;
 
         private boolean hasMorePages;
-        private boolean isLoading = false;
+//        private boolean isLoading = false;
 
         /**
          * Creates an instance and loads the first page of following data.
          */
-        FollowersRecyclerViewAdapter() {
-            loadMoreItems();
-        }
+//        FollowersRecyclerViewAdapter() {
+//            loadMoreItems();
+//        }
 
         /**
          * Adds new users to the list from which the RecyclerView retrieves the users it displays
@@ -252,7 +275,7 @@ public class FollowersFragment extends Fragment {
          */
         @Override
         public void onBindViewHolder(@NonNull FollowersHolder followingHolder, int position) {
-            if (!isLoading) {
+            if (!presenter.isLoading()) {
                 followingHolder.bindUser(users.get(position));
             }
         }
@@ -276,7 +299,7 @@ public class FollowersFragment extends Fragment {
          */
         @Override
         public int getItemViewType(int position) {
-            return (position == users.size() - 1 && isLoading) ? LOADING_DATA_VIEW : ITEM_VIEW;
+            return (position == users.size() - 1 && presenter.isLoading()) ? LOADING_DATA_VIEW : ITEM_VIEW;
         }
 
         /**
@@ -349,7 +372,7 @@ public class FollowersFragment extends Fragment {
             int totalItemCount = layoutManager.getItemCount();
             int firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition();
 
-            if (!followersRecyclerViewAdapter.isLoading && followersRecyclerViewAdapter.hasMorePages) {
+            if (!presenter.isLoading() && presenter.hasMorePages()) {
                 if ((visibleItemCount + firstVisibleItemPosition) >=
                         totalItemCount && firstVisibleItemPosition >= 0) {
                     // Run this code later on the UI thread

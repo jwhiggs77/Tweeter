@@ -68,6 +68,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
         View view = inflater.inflate(R.layout.fragment_following, container, false);
 
         user = (User) getArguments().getSerializable(USER_KEY);
+        presenter = new FollowingPresenter(this);
 
         RecyclerView followingRecyclerView = view.findViewById(R.id.followingRecyclerView);
 
@@ -79,8 +80,8 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
 
         followingRecyclerView.addOnScrollListener(new FollowRecyclerViewPaginationScrollListener(layoutManager));
 
-        presenter = new FollowingPresenter(this);
         presenter.loadMoreItems(user);
+
         return view;
     }
 
@@ -159,6 +160,8 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
     private class FollowingRecyclerViewAdapter extends RecyclerView.Adapter<FollowingHolder> {
 
         private final List<User> users = new ArrayList<>();
+
+//        private boolean isLoading = false;
 
         /**
          * Adds new users to the list from which the RecyclerView retrieves the users it displays

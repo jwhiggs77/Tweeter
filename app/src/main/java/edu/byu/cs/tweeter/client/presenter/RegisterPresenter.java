@@ -4,7 +4,7 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class LoginPresenter {
+public class RegisterPresenter {
 
     public interface View {
         void displayErrorMessage(String message);
@@ -14,31 +14,30 @@ public class LoginPresenter {
     private View view;
     private UserService userService;
 
-    public LoginPresenter(View view) {
+    public RegisterPresenter(View view) {
         this.view = view;
         userService = new UserService();
     }
 
-    public class LoginObserver implements UserService.LoginObserver {
+    public class RegisterObserver implements UserService.RegisterObserver {
 
         @Override
-        public void handleSuccess(User loggedInUser, AuthToken authToken) {
-            view.startActivity(loggedInUser, authToken);
+        public void handleSuccess(User registeredUser, AuthToken authToken) {
+            view.startActivity(registeredUser, authToken);
         }
 
         @Override
         public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to login: " + message);
+            view.displayErrorMessage("Failed to register: " + message);
         }
 
         @Override
         public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to login because of exception: " + ex.getMessage());
+            view.displayErrorMessage("Failed to register because of exception: " + ex.getMessage());
         }
     }
 
-    public void login(String alias, String password) {
-        userService.login(alias, password, new LoginObserver());
+    public void register(String firstName, String lastName, String alias, String password, String imageBytesBase64) {
+        userService.register(firstName, lastName, alias, password, imageBytesBase64, new RegisterObserver());
     }
-
 }

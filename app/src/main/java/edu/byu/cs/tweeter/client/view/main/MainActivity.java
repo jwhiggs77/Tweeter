@@ -41,6 +41,9 @@ import edu.byu.cs.client.R;
 //import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 //import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
 import edu.byu.cs.tweeter.client.cache.Cache;
+import edu.byu.cs.tweeter.client.model.service.MainActivityService;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowersCountTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingCountTask;
 import edu.byu.cs.tweeter.client.presenter.MainActivityPresenter;
 import edu.byu.cs.tweeter.client.view.login.LoginActivity;
 import edu.byu.cs.tweeter.client.view.login.StatusDialogFragment;
@@ -92,7 +95,8 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
             }
         });
 
-        presenter.updateSelectedUserFollowingAndFollowers(selectedUser);
+//        presenter.updateSelectedUserFollowingAndFollowers(selectedUser);
+        updateSelectedUserFollowingAndFollowers(selectedUser);
 
         TextView userName = findViewById(R.id.userName);
         userName.setText(selectedUser.getName());
@@ -119,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
 //                    Cache.getInstance().getCurrUser(), selectedUser, new IsFollowerHandler());
 //            ExecutorService executor = Executors.newSingleThreadExecutor();
 //            executor.execute(isFollowerTask);
+            presenter.isFollower(selectedUser);
         }
 
         followButton.setOnClickListener(new View.OnClickListener() {
@@ -127,17 +132,20 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
                 followButton.setEnabled(false);
 
                 if (followButton.getText().toString().equals(v.getContext().getString(R.string.following))) {
-                    UnfollowTask unfollowTask = new UnfollowTask(Cache.getInstance().getCurrUserAuthToken(),
-                            selectedUser, new UnfollowHandler());
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    executor.execute(unfollowTask);
+//                    UnfollowTask unfollowTask = new UnfollowTask(Cache.getInstance().getCurrUserAuthToken(),
+//                            selectedUser, new UnfollowHandler());
+//                    ExecutorService executor = Executors.newSingleThreadExecutor();
+//                    executor.execute(unfollowTask);
+
+                    presenter.unfollow(selectedUser);
 
                     Toast.makeText(MainActivity.this, "Removing " + selectedUser.getName() + "...", Toast.LENGTH_LONG).show();
                 } else {
-                    FollowTask followTask = new FollowTask(Cache.getInstance().getCurrUserAuthToken(),
-                            selectedUser, new FollowHandler());
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    executor.execute(followTask);
+//                    FollowTask followTask = new FollowTask(Cache.getInstance().getCurrUserAuthToken(),
+//                            selectedUser, new FollowHandler());
+//                    ExecutorService executor = Executors.newSingleThreadExecutor();
+//                    executor.execute(followTask);
+                    presenter.follow(selectedUser);
 
                     Toast.makeText(MainActivity.this, "Adding " + selectedUser.getName() + "...", Toast.LENGTH_LONG).show();
                 }
@@ -273,6 +281,25 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
         }
     }
 
+    public void updateSelectedUserFollowingAndFollowers(User selectedUser) {
+
+        presenter.getFollowersCount(selectedUser);
+        presenter.getFollowingCount(selectedUser);
+
+
+//        ExecutorService executor = Executors.newFixedThreadPool(2);
+//
+//        // Get count of most recently selected user's followers.
+//        GetFollowersCountTask followersCountTask = new GetFollowersCountTask(Cache.getInstance().getCurrUserAuthToken(),
+//                selectedUser, new MainActivityService.GetFollowersCountHandler());
+//        executor.execute(followersCountTask);
+//
+//        // Get count of most recently selected user's followees (who they are following)
+//        GetFollowingCountTask followingCountTask = new GetFollowingCountTask(Cache.getInstance().getCurrUserAuthToken(),
+//                selectedUser, new MainActivityService.GetFollowingCountHandler());
+//        executor.execute(followingCountTask);
+    }
+
     @Override
     public void logout() {
         logOutToast.cancel();
@@ -281,7 +308,38 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     }
 
     @Override
+    public void setFollow() {
+//        presenter.updateSelectedUserFollowingAndFollowers(selectedUser);
+        updateSelectedUserFollowingAndFollowers(selectedUser);
+        updateFollowButton(false);
+        followButton.setEnabled(true);
+    }
+
+    @Override
     public void displayErrorMessage(String message) {
         Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void checkFollower(boolean isFollower) {
+        // If logged in user if a follower of the selected user, display the follow button as "following"
+        if (isFollower) {
+            followButton.setText(R.string.following);
+            followButton.setBackgroundColor(getResources().getColor(R.color.white));
+            followButton.setTextColor(getResources().getColor(R.color.lightGray));
+        } else {
+            followButton.setText(R.string.follow);
+            followButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
+        }
+    }
+
+    @Override
+    public void getFollowerCount(int count) {
+        followerCount.setText(getString(R.string.followerCount, String.valueOf(count)));
+    }
+
+    @Override
+    public void getFollowingCount(int count) {
+        followeeCount.setText(getString(R.string.followeeCount, String.valueOf(count)));
     }
 }

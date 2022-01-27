@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import edu.byu.cs.client.R;
-//import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFeedTask;
 import edu.byu.cs.tweeter.client.presenter.FeedPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.Status;
@@ -83,11 +82,6 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this.getContext());
         feedRecyclerView.setLayoutManager(layoutManager);
 
-//        try {
-//            feedRecyclerViewAdapter = new FeedRecyclerViewAdapter();
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        }
         feedRecyclerViewAdapter = new FeedRecyclerViewAdapter();
         feedRecyclerView.setAdapter(feedRecyclerViewAdapter);
 
@@ -153,10 +147,6 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-//                    GetUserTask getUserTask = new GetUserTask(Cache.getInstance().getCurrUserAuthToken(),
-//                            userAlias.getText().toString(), new GetUserHandler());
-//                    ExecutorService executor = Executors.newSingleThreadExecutor();
-//                    executor.execute(getUserTask);
                     presenter.getUser(userAlias.getText().toString());
                     Toast.makeText(getContext(), "Getting user's profile...", Toast.LENGTH_LONG).show();
                 }
@@ -224,17 +214,6 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
     private class FeedRecyclerViewAdapter extends RecyclerView.Adapter<FeedHolder> {
 
         private final List<Status> feed = new ArrayList<>();
-        private Status lastStatus;
-
-//        private boolean hasMorePages;
-//        private boolean isLoading = false;
-
-//        /**
-//         * Creates an instance and loads the first page of feed data.
-//         */
-//        FeedRecyclerViewAdapter() throws MalformedURLException {
-//            loadMoreItems();
-//        }
 
         /**
          * Adds new statuses to the list from which the RecyclerView retrieves the statuses it displays
@@ -338,15 +317,6 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
          */
         void loadMoreItems() throws MalformedURLException {
             presenter.loadMoreItems(user);
-//            if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-//                isLoading = true;
-//                addLoadingFooter();
-//
-//                GetFeedTask getFeedTask = new GetFeedTask(Cache.getInstance().getCurrUserAuthToken(),
-//                        user, PAGE_SIZE, lastStatus, new GetFeedHandler());
-//                ExecutorService executor = Executors.newSingleThreadExecutor();
-//                executor.execute(getFeedTask);
-//            }
         }
 
         /**

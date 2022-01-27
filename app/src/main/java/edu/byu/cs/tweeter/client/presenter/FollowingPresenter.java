@@ -1,19 +1,22 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import java.util.List;
-
 import edu.byu.cs.tweeter.client.cache.Cache;
-import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.FollowService;
+import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.User;
+
+import java.util.List;
 
 public class FollowingPresenter {
     private static final int PAGE_SIZE = 10;
 
     public interface View {
         void displayErrorMessage(String message);
+
         void setLoadingStatus(boolean value);
+
         void addFollowees(List<User> followees);
+
         void startActivity(User user);
     }
 

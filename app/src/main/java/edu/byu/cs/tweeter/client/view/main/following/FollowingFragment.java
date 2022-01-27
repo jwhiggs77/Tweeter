@@ -10,23 +10,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.picasso.Picasso;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import edu.byu.cs.client.R;
 import edu.byu.cs.tweeter.client.presenter.FollowingPresenter;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.User;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implements the "Following" tab.
@@ -94,8 +90,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
     public void setLoadingStatus(boolean value) {
         if (value) {
             followingRecyclerViewAdapter.addLoadingFooter();
-        }
-        else {
+        } else {
             followingRecyclerViewAdapter.removeLoadingFooter();
         }
     }
@@ -212,8 +207,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
 
             if (viewType == LOADING_DATA_VIEW) {
                 view = layoutInflater.inflate(R.layout.loading_row, parent, false);
-            }
-            else {
+            } else {
                 view = layoutInflater.inflate(R.layout.user_row, parent, false);
             }
 

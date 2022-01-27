@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
             }
         });
 
-//        presenter.updateSelectedUserFollowingAndFollowers(selectedUser);
         updateSelectedUserFollowingAndFollowers(selectedUser);
 
         TextView userName = findViewById(R.id.userName);
@@ -103,10 +102,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
             followButton.setVisibility(View.GONE);
         } else {
             followButton.setVisibility(View.VISIBLE);
-//            IsFollowerTask isFollowerTask = new IsFollowerTask(Cache.getInstance().getCurrUserAuthToken(),
-//                    Cache.getInstance().getCurrUser(), selectedUser, new IsFollowerHandler());
-//            ExecutorService executor = Executors.newSingleThreadExecutor();
-//            executor.execute(isFollowerTask);
             presenter.isFollower(selectedUser);
         }
 
@@ -116,19 +111,10 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
                 followButton.setEnabled(false);
 
                 if (followButton.getText().toString().equals(v.getContext().getString(R.string.following))) {
-//                    UnfollowTask unfollowTask = new UnfollowTask(Cache.getInstance().getCurrUserAuthToken(),
-//                            selectedUser, new UnfollowHandler());
-//                    ExecutorService executor = Executors.newSingleThreadExecutor();
-//                    executor.execute(unfollowTask);
-
                     presenter.unfollow(selectedUser);
 
                     Toast.makeText(MainActivity.this, "Removing " + selectedUser.getName() + "...", Toast.LENGTH_LONG).show();
                 } else {
-//                    FollowTask followTask = new FollowTask(Cache.getInstance().getCurrUserAuthToken(),
-//                            selectedUser, new FollowHandler());
-//                    ExecutorService executor = Executors.newSingleThreadExecutor();
-//                    executor.execute(followTask);
                     presenter.follow(selectedUser);
 
                     Toast.makeText(MainActivity.this, "Adding " + selectedUser.getName() + "...", Toast.LENGTH_LONG).show();
@@ -149,11 +135,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
         if (item.getItemId() == R.id.logoutMenu) {
             logOutToast = Toast.makeText(this, "Logging Out...", Toast.LENGTH_LONG);
             logOutToast.show();
-
-//            LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler());
-//            ExecutorService executor = Executors.newSingleThreadExecutor();
-//            executor.execute(logoutTask);
-
             presenter.logout();
 
             return true;
@@ -179,10 +160,6 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
 
         try {
             Status newStatus = new Status(post, Cache.getInstance().getCurrUser(), getFormattedDateTime(), parseURLs(post), parseMentions(post));
-//            PostStatusTask statusTask = new PostStatusTask(Cache.getInstance().getCurrUserAuthToken(),
-//                    newStatus, new PostStatusHandler());
-//            ExecutorService executor = Executors.newSingleThreadExecutor();
-//            executor.execute(statusTask);
             presenter.postStatus(newStatus);
         } catch (Exception ex) {
             Log.e(LOG_TAG, ex.getMessage(), ex);
@@ -267,34 +244,18 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     }
 
     public void updateSelectedUserFollowingAndFollowers(User selectedUser) {
-
         presenter.getFollowersCount(selectedUser);
         presenter.getFollowingCount(selectedUser);
-
-
-//        ExecutorService executor = Executors.newFixedThreadPool(2);
-//
-//        // Get count of most recently selected user's followers.
-//        GetFollowersCountTask followersCountTask = new GetFollowersCountTask(Cache.getInstance().getCurrUserAuthToken(),
-//                selectedUser, new MainActivityService.GetFollowersCountHandler());
-//        executor.execute(followersCountTask);
-//
-//        // Get count of most recently selected user's followees (who they are following)
-//        GetFollowingCountTask followingCountTask = new GetFollowingCountTask(Cache.getInstance().getCurrUserAuthToken(),
-//                selectedUser, new MainActivityService.GetFollowingCountHandler());
-//        executor.execute(followingCountTask);
     }
 
     @Override
     public void logout() {
         logOutToast.cancel();
         logoutUser();
-        logout();
     }
 
     @Override
     public void setFollow() {
-//        presenter.updateSelectedUserFollowingAndFollowers(selectedUser);
         updateSelectedUserFollowingAndFollowers(selectedUser);
         updateFollowButton(false);
         followButton.setEnabled(true);

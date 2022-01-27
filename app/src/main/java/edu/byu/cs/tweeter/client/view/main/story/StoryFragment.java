@@ -106,8 +106,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
     public void setLoadingStatus(boolean loading) {
         if (loading) {
             storyRecyclerViewAdapter.addLoadingFooter();
-        }
-        else {
+        } else {
             storyRecyclerViewAdapter.removeLoadingFooter();
         }
     }
@@ -141,7 +140,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
             userName = itemView.findViewById(R.id.statusName);
             post = itemView.findViewById(R.id.statusPost);
             datetime = itemView.findViewById(R.id.statusDatetime);
-            
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -214,12 +213,7 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
      * The adapter for the RecyclerView that displays the story data.
      */
     private class StoryRecyclerViewAdapter extends RecyclerView.Adapter<StoryHolder> {
-
         private final List<Status> story = new ArrayList<>();
-//        private Status lastStatus;
-//
-//        private boolean hasMorePages;
-//        private boolean isLoading = false;
 
         /**
          * Adds new statuses to the list from which the RecyclerView retrieves the statuses it displays

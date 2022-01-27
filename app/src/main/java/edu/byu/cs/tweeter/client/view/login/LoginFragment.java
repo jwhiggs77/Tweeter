@@ -9,9 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.fragment.app.Fragment;
-
 import edu.byu.cs.client.R;
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.presenter.LoginPresenter;
@@ -78,15 +76,6 @@ public class LoginFragment extends Fragment implements LoginPresenter.View {
     }
 
     public void validateLogin() {
-//        if (alias.getText().charAt(0) != '@') {
-//            throw new IllegalArgumentException("Alias must begin with @.");
-//        }
-//        if (alias.getText().length() < 2) {
-//            throw new IllegalArgumentException("Alias must contain 1 or more characters after the @.");
-//        }
-//        if (password.getText().length() == 0) {
-//            throw new IllegalArgumentException("Password cannot be empty.");
-//        }
         presenter.validateLogin(alias.getText().toString(), password.getText().toString());
     }
 

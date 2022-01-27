@@ -99,8 +99,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
     public void setLoadingStatus(boolean loading) {
         if (loading) {
             feedRecyclerViewAdapter.addLoadingFooter();
-        }
-        else {
+        } else {
             feedRecyclerViewAdapter.removeLoadingFooter();
         }
     }
@@ -337,7 +336,6 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
         private void removeLoadingFooter() {
             removeItem(feed.get(feed.size() - 1));
         }
-
 
 
     }

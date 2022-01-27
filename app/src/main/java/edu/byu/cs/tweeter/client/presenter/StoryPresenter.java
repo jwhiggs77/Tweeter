@@ -8,15 +8,15 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 import java.util.List;
 
-public class FeedPresenter {
+public class StoryPresenter {
     private static final int PAGE_SIZE = 10;
 
     public interface View {
         void displayErrorMessage(String message);
 
-        void setLoadingStatus(boolean value);
-
         void startActivity(User user);
+
+        void setLoadingStatus(boolean loading);
 
         void addItems(List<Status> statuses);
     }
@@ -30,7 +30,7 @@ public class FeedPresenter {
     private boolean hasMorePages;
     private boolean isLoading = false;
 
-    public FeedPresenter(View view) {
+    public StoryPresenter(View view) {
         this.view = view;
         userService = new UserService();
         statusService = new StatusService();
@@ -56,11 +56,11 @@ public class FeedPresenter {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
             setLoading(true);
             view.setLoadingStatus(isLoading());
-            statusService.getFeed(user, PAGE_SIZE, lastStatus, new GetFeedObserver());
+            statusService.getStory(user, PAGE_SIZE, lastStatus, new GetStoryObserver());
         }
     }
 
-    public class GetFeedObserver implements StatusService.GetFeedObserver {
+    public class GetStoryObserver implements StatusService.GetStoryObserver {
 
         @Override
         public void handleSuccess(List<Status> statuses, boolean hasMorePages) {
@@ -75,14 +75,14 @@ public class FeedPresenter {
         public void handleFailure(String message) {
             setLoading(false);
             view.setLoadingStatus(isLoading());
-            view.displayErrorMessage("Failed to get feed: " + message);
+            view.displayErrorMessage("Failed to get story: " + message);
         }
 
         @Override
         public void handleException(Exception ex) {
             setLoading(false);
             view.setLoadingStatus(isLoading());
-            view.displayErrorMessage("Failed to get feed because of exception: " + ex.getMessage());
+            view.displayErrorMessage("Failed to get story because of exception: " + ex.getMessage());
         }
     }
 

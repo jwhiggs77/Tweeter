@@ -41,6 +41,7 @@ import edu.byu.cs.client.R;
 //import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 //import edu.byu.cs.tweeter.client.model.service.backgroundTask.UnfollowTask;
 import edu.byu.cs.tweeter.client.cache.Cache;
+import edu.byu.cs.tweeter.client.presenter.MainActivityPresenter;
 import edu.byu.cs.tweeter.client.view.login.LoginActivity;
 import edu.byu.cs.tweeter.client.view.login.StatusDialogFragment;
 import edu.byu.cs.tweeter.model.domain.Status;
@@ -49,7 +50,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 /**
  * The main activity for the application. Contains tabs for feed, story, following, and followers.
  */
-public class MainActivity extends AppCompatActivity implements StatusDialogFragment.Observer {
+public class MainActivity extends AppCompatActivity implements StatusDialogFragment.Observer, MainActivityPresenter.View {
 
     private static final String LOG_TAG = "MainActivity";
 
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
     private TextView followeeCount;
     private TextView followerCount;
     private Button followButton;
+
+    private MainActivityPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
             }
         });
 
-        updateSelectedUserFollowingAndFollowers();
+        presenter.updateSelectedUserFollowingAndFollowers(selectedUser);
 
         TextView userName = findViewById(R.id.userName);
         userName.setText(selectedUser.getName());
@@ -155,9 +158,11 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
             logOutToast = Toast.makeText(this, "Logging Out...", Toast.LENGTH_LONG);
             logOutToast.show();
 
-            LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler());
-            ExecutorService executor = Executors.newSingleThreadExecutor();
-            executor.execute(logoutTask);
+//            LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler());
+//            ExecutorService executor = Executors.newSingleThreadExecutor();
+//            executor.execute(logoutTask);
+
+            presenter.logout();
 
             return true;
         } else {
@@ -266,5 +271,17 @@ public class MainActivity extends AppCompatActivity implements StatusDialogFragm
             followButton.setBackgroundColor(getResources().getColor(R.color.white));
             followButton.setTextColor(getResources().getColor(R.color.lightGray));
         }
+    }
+
+    @Override
+    public void logout() {
+        logOutToast.cancel();
+        logoutUser();
+        logout();
+    }
+
+    @Override
+    public void displayErrorMessage(String message) {
+        Toast.makeText(MainActivity.this, message, Toast.LENGTH_LONG).show();
     }
 }

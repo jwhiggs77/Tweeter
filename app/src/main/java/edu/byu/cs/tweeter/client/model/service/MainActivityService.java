@@ -7,7 +7,9 @@ import androidx.annotation.NonNull;
 import edu.byu.cs.client.R;
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowersCountTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetFollowingCountTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.IsFollowerTask;
+import edu.byu.cs.tweeter.client.model.service.backgroundTask.LogoutTask;
 import edu.byu.cs.tweeter.client.view.main.MainActivity;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -16,7 +18,7 @@ import java.util.concurrent.Executors;
 
 public class MainActivityService {
 
-    public void updateSelectedUserFollowingAndFollowers() {
+    public void updateSelectedUserFollowingAndFollowers(User selectedUser) {
         ExecutorService executor = Executors.newFixedThreadPool(2);
 
         // Get count of most recently selected user's followers.
@@ -30,20 +32,41 @@ public class MainActivityService {
         executor.execute(followingCountTask);
     }
 
+    public interface LogoutObserver {
+        void handleSuccess();
+        void handleMessage(String message);
+        void handleException(Exception ex);
+    }
+
+    public void logout (LogoutObserver logoutObserver) {
+        LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler(logoutObserver));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.execute(logoutTask);
+    }
+
     // LogoutHandler
     private class LogoutHandler extends Handler {
+        private LogoutObserver observer;
+
+        public LogoutHandler(LogoutObserver observer) {
+            this.observer = observer;
+        }
+
         @Override
         public void handleMessage(@NonNull Message msg) {
             boolean success = msg.getData().getBoolean(LogoutTask.SUCCESS_KEY);
             if (success) {
-                logOutToast.cancel();
-                logoutUser();
+                observer.handleSuccess();
+//                logOutToast.cancel();
+//                logoutUser();
             } else if (msg.getData().containsKey(LogoutTask.MESSAGE_KEY)) {
                 String message = msg.getData().getString(LogoutTask.MESSAGE_KEY);
-                Toast.makeText(MainActivity.this, "Failed to logout: " + message, Toast.LENGTH_LONG).show();
+                observer.handleMessage(message);
+//                Toast.makeText(MainActivity.this, "Failed to logout: " + message, Toast.LENGTH_LONG).show();
             } else if (msg.getData().containsKey(LogoutTask.EXCEPTION_KEY)) {
                 Exception ex = (Exception) msg.getData().getSerializable(LogoutTask.EXCEPTION_KEY);
-                Toast.makeText(MainActivity.this, "Failed to logout because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
+                observer.handleException(ex);
+//                Toast.makeText(MainActivity.this, "Failed to logout because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -141,7 +164,7 @@ public class MainActivityService {
         public void handleMessage(@NonNull Message msg) {
             boolean success = msg.getData().getBoolean(FollowTask.SUCCESS_KEY);
             if (success) {
-                updateSelectedUserFollowingAndFollowers();
+                updateSelectedUserFollowingAndFollowers(selectedUser);
                 updateFollowButton(false);
             } else if (msg.getData().containsKey(FollowTask.MESSAGE_KEY)) {
                 String message = msg.getData().getString(FollowTask.MESSAGE_KEY);
@@ -161,7 +184,7 @@ public class MainActivityService {
         public void handleMessage(@NonNull Message msg) {
             boolean success = msg.getData().getBoolean(UnfollowTask.SUCCESS_KEY);
             if (success) {
-                updateSelectedUserFollowingAndFollowers();
+                updateSelectedUserFollowingAndFollowers(selectedUser);
                 updateFollowButton(true);
             } else if (msg.getData().containsKey(UnfollowTask.MESSAGE_KEY)) {
                 String message = msg.getData().getString(UnfollowTask.MESSAGE_KEY);

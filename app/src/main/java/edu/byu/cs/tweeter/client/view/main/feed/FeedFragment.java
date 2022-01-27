@@ -43,8 +43,6 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
     private static final int LOADING_DATA_VIEW = 0;
     private static final int ITEM_VIEW = 1;
 
-    private static final int PAGE_SIZE = 10;
-
     private User user;
 
     private FeedRecyclerViewAdapter feedRecyclerViewAdapter;
@@ -98,8 +96,8 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
     }
 
     @Override
-    public void setLoadingStatus(boolean value) {
-        if (value) {
+    public void setLoadingStatus(boolean loading) {
+        if (loading) {
             feedRecyclerViewAdapter.addLoadingFooter();
         }
         else {
@@ -147,8 +145,8 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    presenter.getUser(userAlias.getText().toString());
                     Toast.makeText(getContext(), "Getting user's profile...", Toast.LENGTH_LONG).show();
+                    presenter.getUser(userAlias.getText().toString());
                 }
             });
         }
@@ -184,6 +182,7 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
                             startActivity(intent);
                         } else {
                             Toast.makeText(getContext(), "Getting user's profile...", Toast.LENGTH_LONG).show();
+                            presenter.getUser(clickable);
                         }
                     }
 

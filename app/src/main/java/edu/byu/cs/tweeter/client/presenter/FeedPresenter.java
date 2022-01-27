@@ -13,8 +13,11 @@ public class FeedPresenter {
 
     public interface View {
         void displayErrorMessage(String message);
+
         void setLoadingStatus(boolean value);
+
         void startActivity(User user);
+
         void addItems(List<Status> statuses);
     }
 
@@ -51,17 +54,9 @@ public class FeedPresenter {
 
     public void loadMoreItems(User user) {
         if (!isLoading) {   // This guard is important for avoiding a race condition in the scrolling code.
-//            isLoading = true;
-//            addLoadingFooter();
-
             setLoading(true);
             view.setLoadingStatus(isLoading());
             statusService.getFeed(user, PAGE_SIZE, lastStatus, new GetFeedObserver());
-
-//            GetFeedTask getFeedTask = new GetFeedTask(Cache.getInstance().getCurrUserAuthToken(),
-//                    user, PAGE_SIZE, lastStatus, new GetFeedHandler());
-//            ExecutorService executor = Executors.newSingleThreadExecutor();
-//            executor.execute(getFeedTask);
         }
     }
 

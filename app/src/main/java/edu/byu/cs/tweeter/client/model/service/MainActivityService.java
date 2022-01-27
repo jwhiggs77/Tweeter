@@ -15,21 +15,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MainActivityService {
-
-//    public void updateSelectedUserFollowingAndFollowers(User selectedUser) {
-//        ExecutorService executor = Executors.newFixedThreadPool(2);
-//
-//        // Get count of most recently selected user's followers.
-//        GetFollowersCountTask followersCountTask = new GetFollowersCountTask(Cache.getInstance().getCurrUserAuthToken(),
-//                selectedUser, new GetFollowersCountHandler());
-//        executor.execute(followersCountTask);
-//
-//        // Get count of most recently selected user's followees (who they are following)
-//        GetFollowingCountTask followingCountTask = new GetFollowingCountTask(Cache.getInstance().getCurrUserAuthToken(),
-//                selectedUser, new GetFollowingCountHandler());
-//        executor.execute(followingCountTask);
-//    }
-
     public interface LogoutObserver {
         void handleSuccess();
 
@@ -166,7 +151,7 @@ public class MainActivityService {
         void handleException(Exception ex);
     }
 
-    public void isFollower(User selectedUser, MainActivityPresenter.IsFollowerObserver isFollowerObserver) {
+    public void isFollower(User selectedUser, IsFollowerObserver isFollowerObserver) {
         IsFollowerTask isFollowerTask = new IsFollowerTask(Cache.getInstance().getCurrUserAuthToken(),
                 Cache.getInstance().getCurrUser(), selectedUser, new IsFollowerHandler(isFollowerObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -298,21 +283,5 @@ public class MainActivityService {
         }
     }
 
-    // PostStatusHandler
-    private class PostStatusHandler extends Handler {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            boolean success = msg.getData().getBoolean(PostStatusTask.SUCCESS_KEY);
-            if (success) {
-                postingToast.cancel();
-                Toast.makeText(MainActivity.this, "Successfully Posted!", Toast.LENGTH_LONG).show();
-            } else if (msg.getData().containsKey(PostStatusTask.MESSAGE_KEY)) {
-                String message = msg.getData().getString(PostStatusTask.MESSAGE_KEY);
-                Toast.makeText(MainActivity.this, "Failed to post status: " + message, Toast.LENGTH_LONG).show();
-            } else if (msg.getData().containsKey(PostStatusTask.EXCEPTION_KEY)) {
-                Exception ex = (Exception) msg.getData().getSerializable(PostStatusTask.EXCEPTION_KEY);
-                Toast.makeText(MainActivity.this, "Failed to post status because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        }
-    }
+
 }

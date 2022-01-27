@@ -1,6 +1,8 @@
 package edu.byu.cs.tweeter.client.presenter;
 
-import edu.byu.cs.tweeter.client.model.service.MainActivityService;
+import edu.byu.cs.tweeter.client.model.service.StatusService;
+import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class MainActivityPresenter {
@@ -17,21 +19,24 @@ public class MainActivityPresenter {
         void getFollowerCount(int count);
 
         void getFollowingCount(int count);
+
+        void post();
     }
 
     private View view;
-    private MainActivityService mainActivityService;
+    private UserService userService;
+    private StatusService statusService;
 
     MainActivityPresenter(View view) {
         this.view = view;
-        mainActivityService = new MainActivityService();
+        userService = new UserService();
     }
 
 //    public void updateSelectedUserFollowingAndFollowers(User selectedUser) {
-//        mainActivityService.updateSelectedUserFollowingAndFollowers(selectedUser);
+//        UserService.updateSelectedUserFollowingAndFollowers(selectedUser);
 //    }
 
-    public class LogoutObserver implements MainActivityService.LogoutObserver {
+    public class LogoutObserver implements UserService.LogoutObserver {
 
         @Override
         public void handleSuccess() {
@@ -54,10 +59,10 @@ public class MainActivityPresenter {
     }
 
     public void logout() {
-        mainActivityService.logout(new LogoutObserver());
+        userService.logout(new LogoutObserver());
     }
 
-    public class GetFollowersCountObserver implements MainActivityService.GetFollowersCountObserver {
+    public class GetFollowersCountObserver implements UserService.GetFollowersCountObserver {
 
         @Override
         public void handleSuccess(int count) {
@@ -76,10 +81,10 @@ public class MainActivityPresenter {
     }
 
     public void getFollowersCount(User selectedUser) {
-        mainActivityService.GetFollowersCount(selectedUser, new GetFollowersCountObserver());
+        userService.GetFollowersCount(selectedUser, new GetFollowersCountObserver());
     }
 
-    public class GetFollowingCountObserver implements MainActivityService.GetFollowingCountObserver {
+    public class GetFollowingCountObserver implements UserService.GetFollowingCountObserver {
 
         @Override
         public void handleSuccess(int count) {
@@ -98,10 +103,10 @@ public class MainActivityPresenter {
     }
 
     public void getFollowingCount(User selectedUser) {
-        mainActivityService.GetFollowingCount(selectedUser, new GetFollowingCountObserver());
+        userService.GetFollowingCount(selectedUser, new GetFollowingCountObserver());
     }
 
-    public class IsFollowerObserver implements MainActivityService.IsFollowerObserver {
+    public class IsFollowerObserver implements UserService.IsFollowerObserver {
 
         @Override
         public void handleSuccess(boolean isFollower) {
@@ -120,10 +125,10 @@ public class MainActivityPresenter {
     }
 
     public void isFollower(User selectedUser) {
-        mainActivityService.isFollower(selectedUser, new IsFollowerObserver());
+        userService.isFollower(selectedUser, new IsFollowerObserver());
     }
 
-    public class FollowObserver implements MainActivityService.FollowObserver {
+    public class FollowObserver implements UserService.FollowObserver {
 
         @Override
         public void handleSuccess() {
@@ -142,10 +147,10 @@ public class MainActivityPresenter {
     }
 
     public void follow(User selectedUser) {
-        mainActivityService.follow(selectedUser, new FollowObserver());
+        userService.follow(selectedUser, new FollowObserver());
     }
 
-    public class UnfollowerObserver implements MainActivityService.UnfollowObserver {
+    public class UnfollowerObserver implements UserService.UnfollowObserver {
 
         @Override
         public void handleSuccess() {
@@ -164,6 +169,28 @@ public class MainActivityPresenter {
     }
 
     public void unfollow(User selectedUser) {
-        mainActivityService.unfollow(selectedUser, new UnfollowerObserver());
+        userService.unfollow(selectedUser, new UnfollowerObserver());
+    }
+
+    public class PostStatusObserver implements StatusService.PostStatusObserver {
+
+        @Override
+        public void handleSuccess() {
+            view.post();
+        }
+
+        @Override
+        public void handleMessage(String message) {
+            view.displayErrorMessage("Failed to post status: " + message);
+        }
+
+        @Override
+        public void handleException(Exception ex) {
+            view.displayErrorMessage("Failed to post status because of exception: " + ex.getMessage());
+        }
+    }
+
+    public void postStatus(Status newStatus) {
+        statusService.postStatus(newStatus, new PostStatusObserver());
     }
 }

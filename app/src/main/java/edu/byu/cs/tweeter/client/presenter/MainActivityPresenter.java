@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.model.domain.Status;
@@ -25,11 +26,14 @@ public class MainActivityPresenter {
 
     private View view;
     private UserService userService;
+    private FollowService followService;
     private StatusService statusService;
 
     public MainActivityPresenter(View view) {
         this.view = view;
         userService = new UserService();
+        followService = new FollowService();
+        statusService = new StatusService();
     }
 
 //    public void updateSelectedUserFollowingAndFollowers(User selectedUser) {
@@ -128,7 +132,7 @@ public class MainActivityPresenter {
         userService.isFollower(selectedUser, new IsFollowerObserver());
     }
 
-    public class FollowObserver implements UserService.FollowObserver {
+    public class FollowObserver implements FollowService.FollowObserver {
 
         @Override
         public void handleSuccess() {
@@ -147,10 +151,10 @@ public class MainActivityPresenter {
     }
 
     public void follow(User selectedUser) {
-        userService.follow(selectedUser, new FollowObserver());
+        followService.follow(selectedUser, new FollowObserver());
     }
 
-    public class UnfollowerObserver implements UserService.UnfollowObserver {
+    public class UnfollowerObserver implements FollowService.UnfollowObserver {
 
         @Override
         public void handleSuccess() {
@@ -169,7 +173,7 @@ public class MainActivityPresenter {
     }
 
     public void unfollow(User selectedUser) {
-        userService.unfollow(selectedUser, new UnfollowerObserver());
+        followService.unfollow(selectedUser, new UnfollowerObserver());
     }
 
     public class PostStatusObserver implements StatusService.PostStatusObserver {

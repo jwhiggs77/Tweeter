@@ -108,7 +108,6 @@ public class UserService {
         // Send register request.
         RegisterTask registerTask = new RegisterTask(firstName, lastName,
                 alias, password, imageBytesBase64, new RegisterHandler(registerObserver));
-
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(registerTask);
     }
@@ -164,16 +163,12 @@ public class UserService {
             boolean success = msg.getData().getBoolean(LogoutTask.SUCCESS_KEY);
             if (success) {
                 observer.handleSuccess();
-//                logOutToast.cancel();
-//                logoutUser();
             } else if (msg.getData().containsKey(LogoutTask.MESSAGE_KEY)) {
                 String message = msg.getData().getString(LogoutTask.MESSAGE_KEY);
                 observer.handleMessage(message);
-//                Toast.makeText(MainActivity.this, "Failed to logout: " + message, Toast.LENGTH_LONG).show();
             } else if (msg.getData().containsKey(LogoutTask.EXCEPTION_KEY)) {
                 Exception ex = (Exception) msg.getData().getSerializable(LogoutTask.EXCEPTION_KEY);
                 observer.handleException(ex);
-//                Toast.makeText(MainActivity.this, "Failed to logout because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -208,15 +203,12 @@ public class UserService {
             if (success) {
                 int count = msg.getData().getInt(GetFollowersCountTask.COUNT_KEY);
                 observer.handleSuccess(count);
-//                followerCount.setText(getString(R.string.followerCount, String.valueOf(count)));
             } else if (msg.getData().containsKey(GetFollowersCountTask.MESSAGE_KEY)) {
                 String message = msg.getData().getString(GetFollowersCountTask.MESSAGE_KEY);
                 observer.handleMessage(message);
-//                Toast.makeText(MainActivity.this, "Failed to get followers count: " + message, Toast.LENGTH_LONG).show();
             } else if (msg.getData().containsKey(GetFollowersCountTask.EXCEPTION_KEY)) {
                 Exception ex = (Exception) msg.getData().getSerializable(GetFollowersCountTask.EXCEPTION_KEY);
                 observer.handleException(ex);
-//                Toast.makeText(MainActivity.this, "Failed to get followers count because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -251,15 +243,12 @@ public class UserService {
             if (success) {
                 int count = msg.getData().getInt(GetFollowingCountTask.COUNT_KEY);
                 observer.handleSuccess(count);
-//                followeeCount.setText(getString(R.string.followeeCount, String.valueOf(count)));
             } else if (msg.getData().containsKey(GetFollowingCountTask.MESSAGE_KEY)) {
                 String message = msg.getData().getString(GetFollowingCountTask.MESSAGE_KEY);
                 observer.handleMessage(message);
-//                Toast.makeText(MainActivity.this, "Failed to get following count: " + message, Toast.LENGTH_LONG).show();
             } else if (msg.getData().containsKey(GetFollowingCountTask.EXCEPTION_KEY)) {
                 Exception ex = (Exception) msg.getData().getSerializable(GetFollowingCountTask.EXCEPTION_KEY);
                 observer.handleException(ex);
-//                Toast.makeText(MainActivity.this, "Failed to get following count because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -293,115 +282,14 @@ public class UserService {
             boolean success = msg.getData().getBoolean(IsFollowerTask.SUCCESS_KEY);
             if (success) {
                 boolean isFollower = msg.getData().getBoolean(IsFollowerTask.IS_FOLLOWER_KEY);
-
                 observer.handleSuccess(isFollower);
-
-//                // If logged in user if a follower of the selected user, display the follow button as "following"
-//                if (isFollower) {
-//                    followButton.setText(R.string.following);
-//                    followButton.setBackgroundColor(getResources().getColor(R.color.white));
-//                    followButton.setTextColor(getResources().getColor(R.color.lightGray));
-//                } else {
-//                    followButton.setText(R.string.follow);
-//                    followButton.setBackgroundColor(getResources().getColor(R.color.colorAccent));
-//                }
             } else if (msg.getData().containsKey(IsFollowerTask.MESSAGE_KEY)) {
                 String message = msg.getData().getString(IsFollowerTask.MESSAGE_KEY);
                 observer.handleMessage(message);
-//                Toast.makeText(MainActivity.this, "Failed to determine following relationship: " + message, Toast.LENGTH_LONG).show();
             } else if (msg.getData().containsKey(IsFollowerTask.EXCEPTION_KEY)) {
                 Exception ex = (Exception) msg.getData().getSerializable(IsFollowerTask.EXCEPTION_KEY);
                 observer.handleException(ex);
-//                Toast.makeText(MainActivity.this, "Failed to determine following relationship because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
             }
-        }
-    }
-
-    public interface FollowObserver {
-        void handleSuccess();
-
-        void handleMessage(String message);
-
-        void handleException(Exception ex);
-    }
-
-    public void follow(User selectedUser, UserService.FollowObserver followObserver) {
-        FollowTask followTask = new FollowTask(Cache.getInstance().getCurrUserAuthToken(),
-                selectedUser, new UserService.FollowHandler(followObserver));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(followTask);
-    }
-
-    // FollowHandler
-    private class FollowHandler extends Handler {
-        UserService.FollowObserver observer;
-
-        public FollowHandler(UserService.FollowObserver observer) {
-            this.observer = observer;
-        }
-
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            boolean success = msg.getData().getBoolean(FollowTask.SUCCESS_KEY);
-            if (success) {
-//                updateSelectedUserFollowingAndFollowers(selectedUser);
-//                updateFollowButton(false);
-                observer.handleSuccess();
-            } else if (msg.getData().containsKey(FollowTask.MESSAGE_KEY)) {
-                String message = msg.getData().getString(FollowTask.MESSAGE_KEY);
-                observer.handleMessage(message);
-//                Toast.makeText(MainActivity.this, "Failed to follow: " + message, Toast.LENGTH_LONG).show();
-            } else if (msg.getData().containsKey(FollowTask.EXCEPTION_KEY)) {
-                Exception ex = (Exception) msg.getData().getSerializable(FollowTask.EXCEPTION_KEY);
-                observer.handleException(ex);
-//                Toast.makeText(MainActivity.this, "Failed to follow because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-            }
-
-//            followButton.setEnabled(true);
-        }
-    }
-
-    public interface UnfollowObserver {
-        void handleSuccess();
-
-        void handleMessage(String message);
-
-        void handleException(Exception ex);
-    }
-
-    public void unfollow(User selectedUser, UserService.UnfollowObserver unfollowObserver) {
-        UnfollowTask unfollowTask = new UnfollowTask(Cache.getInstance().getCurrUserAuthToken(),
-                selectedUser, new UserService.UnfollowHandler(unfollowObserver));
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.execute(unfollowTask);
-    }
-
-    // UnfollowHandler
-    private class UnfollowHandler extends Handler {
-        UserService.UnfollowObserver observer;
-
-        public UnfollowHandler(UserService.UnfollowObserver observer) {
-            this.observer = observer;
-        }
-
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            boolean success = msg.getData().getBoolean(UnfollowTask.SUCCESS_KEY);
-            if (success) {
-                observer.handleSuccess();
-//                updateSelectedUserFollowingAndFollowers(selectedUser);
-//                updateFollowButton(true);
-            } else if (msg.getData().containsKey(UnfollowTask.MESSAGE_KEY)) {
-                String message = msg.getData().getString(UnfollowTask.MESSAGE_KEY);
-                observer.handleMessage(message);
-//                Toast.makeText(MainActivity.this, "Failed to unfollow: " + message, Toast.LENGTH_LONG).show();
-            } else if (msg.getData().containsKey(UnfollowTask.EXCEPTION_KEY)) {
-                Exception ex = (Exception) msg.getData().getSerializable(UnfollowTask.EXCEPTION_KEY);
-                observer.handleException(ex);
-//                Toast.makeText(MainActivity.this, "Failed to unfollow because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
-            }
-
-//            followButton.setEnabled(true);
         }
     }
 }

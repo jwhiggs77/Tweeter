@@ -27,7 +27,7 @@ public class MainActivityPresenter {
     private UserService userService;
     private StatusService statusService;
 
-    MainActivityPresenter(View view) {
+    public MainActivityPresenter(View view) {
         this.view = view;
         userService = new UserService();
     }

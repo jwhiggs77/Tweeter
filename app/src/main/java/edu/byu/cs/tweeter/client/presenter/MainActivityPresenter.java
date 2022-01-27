@@ -36,29 +36,21 @@ public class MainActivityPresenter {
         statusService = new StatusService();
     }
 
-//    public void updateSelectedUserFollowingAndFollowers(User selectedUser) {
-//        UserService.updateSelectedUserFollowingAndFollowers(selectedUser);
-//    }
-
     public class LogoutObserver implements UserService.LogoutObserver {
 
         @Override
         public void handleSuccess() {
             view.logout();
-//            logOutToast.cancel();
-//            logoutUser();
         }
 
         @Override
         public void handleMessage(String message) {
             view.displayErrorMessage("Failed to logout: " + message);
-//            Toast.makeText(MainActivity.this, "Failed to logout: " + message, Toast.LENGTH_LONG).show();
         }
 
         @Override
         public void handleException(Exception ex) {
             view.displayErrorMessage("Failed to logout because of exception: " + ex.getMessage());
-//            Toast.makeText(MainActivity.this, "Failed to logout because of exception: " + ex.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

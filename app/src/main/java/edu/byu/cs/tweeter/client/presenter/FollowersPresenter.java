@@ -12,8 +12,11 @@ public class FollowersPresenter {
 
     public interface View {
         void displayErrorMessage(String message);
+
         void setLoadingStatus(boolean value);
+
         void addFollowers(List<User> followers);
+
         void startActivity(User user);
     }
 
@@ -53,8 +56,6 @@ public class FollowersPresenter {
             setLoading(true);
             view.setLoadingStatus(isLoading());
             followService.getFollowers(Cache.getInstance().getCurrUserAuthToken(), user, PAGE_SIZE, lastFollower, new GetFollowersObserver());
-
-
         }
     }
 

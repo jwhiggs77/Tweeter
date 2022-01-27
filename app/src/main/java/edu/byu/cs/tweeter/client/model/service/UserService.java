@@ -2,22 +2,22 @@ package edu.byu.cs.tweeter.client.model.service;
 
 import android.os.Handler;
 import android.os.Message;
-
 import androidx.annotation.NonNull;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.*;
 import edu.byu.cs.tweeter.client.presenter.MainActivityPresenter;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class UserService {
     public interface GetUserObserver {
         void handleSuccess(User user);
+
         void handleException(Exception ex);
+
         void handleMessage(String message);
     }
 
@@ -56,7 +56,9 @@ public class UserService {
 
     public interface LoginObserver {
         void handleSuccess(User loggedInUser, AuthToken authToken);
+
         void handleException(Exception ex);
+
         void handleMessage(String message);
     }
 
@@ -100,7 +102,9 @@ public class UserService {
 
     public interface RegisterObserver {
         void handleSuccess(User registeredUser, AuthToken authToken);
+
         void handleMessage(String message);
+
         void handleException(Exception ex);
     }
 
@@ -144,17 +148,17 @@ public class UserService {
         void handleException(Exception ex);
     }
 
-    public void logout(UserService.LogoutObserver logoutObserver) {
-        LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new UserService.LogoutHandler(logoutObserver));
+    public void logout(LogoutObserver logoutObserver) {
+        LogoutTask logoutTask = new LogoutTask(Cache.getInstance().getCurrUserAuthToken(), new LogoutHandler(logoutObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(logoutTask);
     }
 
     // LogoutHandler
     private class LogoutHandler extends Handler {
-        private UserService.LogoutObserver observer;
+        private LogoutObserver observer;
 
-        public LogoutHandler(UserService.LogoutObserver observer) {
+        public LogoutHandler(LogoutObserver observer) {
             this.observer = observer;
         }
 

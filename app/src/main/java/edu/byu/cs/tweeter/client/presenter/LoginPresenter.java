@@ -8,6 +8,7 @@ public class LoginPresenter {
 
     public interface View {
         void displayErrorMessage(String message);
+
         void startActivity(User loggedInUser, AuthToken authToken);
     }
 

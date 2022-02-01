@@ -12,13 +12,8 @@ import edu.byu.cs.tweeter.util.FakeData;
 /**
  * Background task that returns the profile for a specified user.
  */
-public class GetUserTask implements Runnable {
+public class GetUserTask extends BackgroundTask {
     private static final String LOG_TAG = "GetUserTask";
-
-    public static final String SUCCESS_KEY = "success";
-    public static final String USER_KEY = "user";
-    public static final String MESSAGE_KEY = "message";
-    public static final String EXCEPTION_KEY = "exception";
 
     /**
      * Auth token for logged-in user.

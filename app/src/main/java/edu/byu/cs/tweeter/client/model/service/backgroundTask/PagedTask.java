@@ -38,7 +38,7 @@ public abstract class PagedTask<T> extends AuthenticatedTask {
         return limit;
     }
 
-    public User getLastItem() {
+    public T getLastItem() {
         return lastItem;
     }
 

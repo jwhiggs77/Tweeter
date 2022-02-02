@@ -14,8 +14,6 @@ import java.util.List;
 public class GetFollowersTask extends PagedTask<User> {
     private static final String LOG_TAG = "GetFollowersTask";
 
-
-
     public GetFollowersTask(AuthToken authToken, User targetUser, int limit, User lastFollower,
                             Handler messageHandler) {
         super(messageHandler, authToken, targetUser, limit, lastFollower);

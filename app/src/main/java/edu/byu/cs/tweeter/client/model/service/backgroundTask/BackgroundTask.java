@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import edu.byu.cs.tweeter.model.domain.User;
+import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.util.FakeData;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,9 +13,12 @@ public abstract class BackgroundTask implements Runnable {
     private static final String LOG_TAG = "BackgroundTask";
 
     public static final String SUCCESS_KEY = "success";
-    public static final String USER_KEY = "user";
     public static final String MESSAGE_KEY = "message";
     public static final String EXCEPTION_KEY = "exception";
+    /**
+     * Auth token for logged-in user.
+     */
+//    protected AuthToken authToken;
 
     public BackgroundTask(Handler messageHandler) {
         this.messageHandler = messageHandler;
@@ -35,7 +38,7 @@ public abstract class BackgroundTask implements Runnable {
     @Override
     public void run() {
         try {
-            runTask();
+            processTask();
             
             sendSuccessMessage();
         } catch (Exception ex) {
@@ -44,7 +47,7 @@ public abstract class BackgroundTask implements Runnable {
         }
     }
 
-    protected abstract void runTask();
+    protected abstract void processTask();
 
     protected abstract void loadSuccessBundle(Bundle msgBundle);
 

@@ -19,6 +19,7 @@ public class GetFollowersTask extends PagedTask<User> {
         super(messageHandler, authToken, targetUser, limit, lastFollower);
     }
 
+    @Override
     protected Pair<List<User>, Boolean> getItems() {
         return getFakeData().getPageOfUsers(getLastItem(), getLimit(), getTargetUser());
     }

@@ -44,9 +44,9 @@ public abstract class PagedTask<T> extends AuthenticatedTask {
 
     public PagedTask(Handler messageHandler, AuthToken authToken, User targetUser, int limit, T lastItem) {
         super(messageHandler, authToken);
-//        this.targetUser = targetUser;
-//        this.limit = limit;
-//        this.lastItem = lastItem;
+        this.targetUser = targetUser;
+        this.limit = limit;
+        this. lastItem = lastItem;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package edu.byu.cs.tweeter.client.presenter;
 
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.handler.observer.AuthenticateObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -20,7 +21,7 @@ public class LoginPresenter {
         userService = new UserService();
     }
 
-    public class LoginObserver implements UserService.LoginObserver {
+    public class LoginObserver implements AuthenticateObserver {
 
         @Override
         public void handleSuccess(User loggedInUser, AuthToken authToken) {

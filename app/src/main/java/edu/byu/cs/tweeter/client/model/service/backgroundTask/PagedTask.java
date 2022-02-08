@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public abstract class PagedTask<T> extends AuthenticatedTask {
-    public static final String ITEMS_KEY = "followers";
+    public static final String ITEMS_KEY = "items";
     public static final String MORE_PAGES_KEY = "more-pages";
     protected List<T> items;
     protected boolean hasMorePages;

@@ -6,37 +6,26 @@ import edu.byu.cs.tweeter.client.model.service.backgroundTask.GetStoryTask;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.PostStatusTask;
 import edu.byu.cs.tweeter.client.model.service.handler.GetFeedHandler;
 import edu.byu.cs.tweeter.client.model.service.handler.GetStoryHandler;
-import edu.byu.cs.tweeter.client.model.service.handler.PostStatusHandler;
+import edu.byu.cs.tweeter.client.model.service.handler.SimpleNotificationHandler;
+import edu.byu.cs.tweeter.client.model.service.handler.observer.PagedNotificationObserver;
+import edu.byu.cs.tweeter.client.model.service.handler.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class StatusService {
 
-    public interface PostStatusObserver {
-        void handleSuccess();
-
-        void handleMessage(String message);
-
-        void handleException(Exception ex);
-    }
-
-    public void postStatus(Status newStatus, PostStatusObserver postStatusObserver) {
+    public void postStatus(Status newStatus, SimpleNotificationObserver postStatusObserver) {
         PostStatusTask statusTask = new PostStatusTask(Cache.getInstance().getCurrUserAuthToken(),
-                newStatus, new PostStatusHandler(postStatusObserver));
+                newStatus, new SimpleNotificationHandler(postStatusObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(statusTask);
     }
 
-    public interface GetFeedObserver {
-        void handleSuccess(List<Status> statuses, boolean hasMorePages);
+    public interface GetFeedObserver extends PagedNotificationObserver<Status> {
 
-        void handleFailure(String message);
-
-        void handleException(Exception exception);
     }
 
     public void getFeed(User user, int pageSize, Status lastStatus, GetFeedObserver getFeedObserver) {
@@ -46,12 +35,8 @@ public class StatusService {
         executor.execute(getFeedTask);
     }
 
-    public interface GetStoryObserver {
-        void handleSuccess(List<Status> statuses, boolean hasMorePages);
+    public interface GetStoryObserver extends PagedNotificationObserver<Status> {
 
-        void handleFailure(String message);
-
-        void handleException(Exception exception);
     }
 
     public void getStory(User user, int pageSize, Status lastStatus, GetStoryObserver getStoryObserver) {

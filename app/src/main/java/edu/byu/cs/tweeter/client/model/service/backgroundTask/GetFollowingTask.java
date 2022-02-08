@@ -11,7 +11,6 @@ import java.util.List;
  * Background task that retrieves a page of other users being followed by a specified user.
  */
 public class GetFollowingTask extends PagedTask<User> {
-    private static final String LOG_TAG = "GetFollowingTask";
 
     public GetFollowingTask(AuthToken authToken, User targetUser, int limit, User lastFollowee,
                             Handler messageHandler) {

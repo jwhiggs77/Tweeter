@@ -4,6 +4,7 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.handler.observer.GetCountObserver;
+import edu.byu.cs.tweeter.client.model.service.handler.observer.IsFollowerObserver;
 import edu.byu.cs.tweeter.client.model.service.handler.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -104,7 +105,7 @@ public class MainActivityPresenter {
         userService.GetFollowingCount(selectedUser, new GetFollowingCountObserver());
     }
 
-    public class IsFollowerObserver implements UserService.IsFollowerObserver {
+    public class IsFollowerObserver implements edu.byu.cs.tweeter.client.model.service.handler.observer.IsFollowerObserver {
 
         @Override
         public void handleSuccess(boolean isFollower) {

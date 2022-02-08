@@ -6,7 +6,6 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public class GetCountTask extends AuthenticatedTask {
-
     /**
      * The user whose follower count is being retrieved.
      * (This can be any user, not just the currently logged-in user.)

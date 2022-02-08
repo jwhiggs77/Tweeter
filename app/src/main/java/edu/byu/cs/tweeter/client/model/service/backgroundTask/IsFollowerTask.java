@@ -11,8 +11,6 @@ import java.util.Random;
  * Background task that determines if one user is following another.
  */
 public class IsFollowerTask extends AuthenticatedTask {
-    private static final String LOG_TAG = "IsFollowerTask";
-
     public static final String IS_FOLLOWER_KEY = "is-follower";
 
     /**

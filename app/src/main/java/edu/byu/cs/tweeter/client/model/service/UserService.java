@@ -3,9 +3,7 @@ package edu.byu.cs.tweeter.client.model.service;
 import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.*;
 import edu.byu.cs.tweeter.client.model.service.handler.*;
-import edu.byu.cs.tweeter.client.model.service.handler.observer.AuthenticateObserver;
-import edu.byu.cs.tweeter.client.model.service.handler.observer.GetCountObserver;
-import edu.byu.cs.tweeter.client.model.service.handler.observer.SimpleNotificationObserver;
+import edu.byu.cs.tweeter.client.model.service.handler.observer.*;
 import edu.byu.cs.tweeter.client.presenter.MainActivityPresenter;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
@@ -14,13 +12,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class UserService {
-    public interface GetUserObserver {
-        void handleSuccess(User user);
-
-        void handleException(Exception ex);
-
-        void handleMessage(String message);
-    }
 
     public void getUser(AuthToken currUserAuthToken, String userAlias, GetUserObserver getUserObserver) {
         GetUserTask getUserTask = new GetUserTask(currUserAuthToken,
@@ -65,16 +56,7 @@ public class UserService {
         executor.execute(followingCountTask);
     }
 
-    public interface IsFollowerObserver {
-
-        void handleSuccess(boolean isFollower);
-
-        void handleMessage(String message);
-
-        void handleException(Exception ex);
-    }
-
-    public void isFollower(User selectedUser, MainActivityPresenter.IsFollowerObserver isFollowerObserver) {
+    public void isFollower(User selectedUser, IsFollowerObserver isFollowerObserver) {
         IsFollowerTask isFollowerTask = new IsFollowerTask(Cache.getInstance().getCurrUserAuthToken(),
                 Cache.getInstance().getCurrUser(), selectedUser, new IsFollowerHandler(isFollowerObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();

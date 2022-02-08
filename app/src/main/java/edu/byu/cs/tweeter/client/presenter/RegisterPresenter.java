@@ -2,6 +2,7 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import android.widget.ImageView;
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.handler.observer.AuthenticateObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -21,7 +22,7 @@ public class RegisterPresenter {
         userService = new UserService();
     }
 
-    public class RegisterObserver implements UserService.RegisterObserver {
+    public class RegisterObserver implements AuthenticateObserver {
 
         @Override
         public void handleSuccess(User registeredUser, AuthToken authToken) {

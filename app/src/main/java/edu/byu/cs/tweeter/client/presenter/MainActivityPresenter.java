@@ -3,6 +3,8 @@ package edu.byu.cs.tweeter.client.presenter;
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
+import edu.byu.cs.tweeter.client.model.service.handler.observer.GetCountObserver;
+import edu.byu.cs.tweeter.client.model.service.handler.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
@@ -36,7 +38,7 @@ public class MainActivityPresenter {
         statusService = new StatusService();
     }
 
-    public class LogoutObserver implements UserService.LogoutObserver {
+    public class LogoutObserver implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {
@@ -58,7 +60,7 @@ public class MainActivityPresenter {
         userService.logout(new LogoutObserver());
     }
 
-    public class GetFollowersCountObserver implements UserService.GetFollowersCountObserver {
+    public class GetFollowersCountObserver implements GetCountObserver {
 
         @Override
         public void handleSuccess(int count) {
@@ -80,7 +82,7 @@ public class MainActivityPresenter {
         userService.GetFollowersCount(selectedUser, new GetFollowersCountObserver());
     }
 
-    public class GetFollowingCountObserver implements UserService.GetFollowingCountObserver {
+    public class GetFollowingCountObserver implements GetCountObserver {
 
         @Override
         public void handleSuccess(int count) {
@@ -124,7 +126,7 @@ public class MainActivityPresenter {
         userService.isFollower(selectedUser, new IsFollowerObserver());
     }
 
-    public class FollowObserver implements FollowService.FollowObserver {
+    public class FollowObserver implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {
@@ -146,7 +148,7 @@ public class MainActivityPresenter {
         followService.follow(selectedUser, new FollowObserver());
     }
 
-    public class UnfollowerObserver implements FollowService.UnfollowObserver {
+    public class UnfollowerObserver implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {
@@ -168,7 +170,7 @@ public class MainActivityPresenter {
         followService.unfollow(selectedUser, new UnfollowerObserver());
     }
 
-    public class PostStatusObserver implements StatusService.PostStatusObserver {
+    public class PostStatusObserver implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {

@@ -71,7 +71,7 @@ public class FollowersPresenter {
         }
 
         @Override
-        public void handleFailure(String message) {
+        public void handleMessage(String message) {
             setLoading(false);
             view.setLoadingStatus(isLoading());
             view.displayErrorMessage("Failed to get following: " + message);

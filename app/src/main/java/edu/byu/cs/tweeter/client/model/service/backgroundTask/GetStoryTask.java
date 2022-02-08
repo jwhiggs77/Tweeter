@@ -12,7 +12,6 @@ import java.util.List;
  * Background task that retrieves a page of statuses from a user's story.
  */
 public class GetStoryTask extends PagedTask<Status> {
-    private static final String LOG_TAG = "GetStoryTask";
 
     public GetStoryTask(AuthToken authToken, User targetUser, int limit, Status lastStatus,
                         Handler messageHandler) {

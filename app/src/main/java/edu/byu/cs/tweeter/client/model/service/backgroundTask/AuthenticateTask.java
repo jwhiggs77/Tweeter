@@ -14,14 +14,14 @@ public class AuthenticateTask extends BackgroundTask {
     /**
      * The user's username (or "alias" or "handle"). E.g., "@susan".
      */
-    private String username;
+    private final String username;
     /**
      * The user's password.
      */
-    private String password;
+    private final String password;
 
-    User currentUser;
-    AuthToken authToken;
+    private User currentUser;
+    private AuthToken authToken;
 
     public AuthenticateTask(Handler messageHandler, String username, String password) {
         super(messageHandler);
@@ -38,9 +38,9 @@ public class AuthenticateTask extends BackgroundTask {
     @Override
     protected void processTask() {
         Pair<User, AuthToken> loginResult = doLogin();
-
         currentUser = loginResult.getFirst();
         authToken = loginResult.getSecond();
+        sendSuccessMessage();
     }
 
     @Override

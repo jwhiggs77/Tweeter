@@ -4,26 +4,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.util.FakeData;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BackgroundTask implements Runnable {
-
     private static final String LOG_TAG = "BackgroundTask";
-
     public static final String SUCCESS_KEY = "success";
     public static final String MESSAGE_KEY = "message";
     public static final String EXCEPTION_KEY = "exception";
 
-    public BackgroundTask(Handler messageHandler) {
-        this.messageHandler = messageHandler;
-    }
-
     /**
      * Message handler that will receive task results.
      */
-    private Handler messageHandler;
+    private final Handler messageHandler;
+
+    protected BackgroundTask(Handler messageHandler) {
+        this.messageHandler = messageHandler;
+    }
 
     protected void sendSuccessMessage() {
         Bundle msgBundle = createBundle(true);

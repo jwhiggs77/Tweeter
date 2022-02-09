@@ -18,7 +18,7 @@ import java.util.List;
  * Message handler (i.e., observer) for GetFollowersTask.
  */
 public class GetFollowersHandler extends PagedNotificationHandler {
-    public GetFollowersHandler(FollowService.GetFollowersObserver observer) {
+    public GetFollowersHandler(PagedNotificationObserver observer) {
         super(observer);
     }
 }

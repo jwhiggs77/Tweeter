@@ -24,22 +24,14 @@ public class StatusService {
         executor.execute(statusTask);
     }
 
-    public interface GetFeedObserver extends PagedNotificationObserver<Status> {
-
-    }
-
-    public void getFeed(User user, int pageSize, Status lastStatus, GetFeedObserver getFeedObserver) {
+    public void getFeed(User user, int pageSize, Status lastStatus, PagedNotificationObserver<Status> getFeedObserver) {
         GetFeedTask getFeedTask = new GetFeedTask(Cache.getInstance().getCurrUserAuthToken(),
                 user, pageSize, lastStatus, new GetFeedHandler(getFeedObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.execute(getFeedTask);
     }
 
-    public interface GetStoryObserver extends PagedNotificationObserver<Status> {
-
-    }
-
-    public void getStory(User user, int pageSize, Status lastStatus, GetStoryObserver getStoryObserver) {
+    public void getStory(User user, int pageSize, Status lastStatus, PagedNotificationObserver<Status> getStoryObserver) {
         GetStoryTask getStoryTask = new GetStoryTask(Cache.getInstance().getCurrUserAuthToken(),
                 user, pageSize, lastStatus, new GetStoryHandler(getStoryObserver));
         ExecutorService executor = Executors.newSingleThreadExecutor();

@@ -18,15 +18,14 @@ public class FeedPresenter {
 
         void setLoadingStatus(boolean value);
 
-        void startActivity(User user);
-
         void addItems(List<Status> statuses);
+
+        void startActivity(User user);
     }
 
     private View view;
     private UserService userService;
     private StatusService statusService;
-
     private Status lastStatus;
 
     private boolean hasMorePages;

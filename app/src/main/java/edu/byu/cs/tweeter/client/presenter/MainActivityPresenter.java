@@ -11,12 +11,10 @@ import edu.byu.cs.tweeter.model.domain.User;
 
 public class MainActivityPresenter {
 
-    public interface View {
+    public interface View extends Presenter.View {
         void logout();
 
         void setFollow();
-
-        void displayErrorMessage(String message);
 
         void checkFollower(boolean isFollower);
 

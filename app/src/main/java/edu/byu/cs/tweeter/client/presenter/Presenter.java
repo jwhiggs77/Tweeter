@@ -1,7 +1,6 @@
 package edu.byu.cs.tweeter.client.presenter;
 
 import edu.byu.cs.tweeter.client.model.service.handler.observer.ServiceObserver;
-import edu.byu.cs.tweeter.model.domain.User;
 
 public abstract class Presenter {
     public interface View {
@@ -9,7 +8,6 @@ public abstract class Presenter {
     }
 
     protected View view;
-//    public abstract String getMessageTag();
 
     public abstract class Observer implements ServiceObserver {
 

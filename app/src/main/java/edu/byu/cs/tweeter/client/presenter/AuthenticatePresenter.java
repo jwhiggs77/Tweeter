@@ -13,21 +13,10 @@ public abstract class AuthenticatePresenter extends Presenter {
     protected UserService userService;
 
     public abstract class AuthenticateObserver extends Observer implements edu.byu.cs.tweeter.client.model.service.handler.observer.AuthenticateObserver {
-
         @Override
         public void handleSuccess(User currentUser, AuthToken authToken) {
             view.startActivity(currentUser, authToken);
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage(getMessageTag() + message);
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage(getMessageTag() + ex.getMessage());
-//        }
     }
 
     public void validate(String alias, String password) {

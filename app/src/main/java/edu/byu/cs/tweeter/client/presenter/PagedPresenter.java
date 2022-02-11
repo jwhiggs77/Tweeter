@@ -93,16 +93,6 @@ public abstract class PagedPresenter<T> extends Presenter {
         public String getMessageTag() {
             return "Failed to get user's profile: ";
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage("Failed to get user's profile: " + message);
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage("Failed to get user's profile because of exception: " + ex.getMessage());
-//        }
     }
 
     public void getUser(String userAlias) {

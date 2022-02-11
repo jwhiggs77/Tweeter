@@ -48,16 +48,6 @@ public class MainActivityPresenter extends Presenter {
         public String getMessageTag() {
             return "Failed to logout: ";
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage("Failed to logout: " + message);
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage("Failed to logout because of exception: " + ex.getMessage());
-//        }
     }
 
     public void logout() {
@@ -75,16 +65,6 @@ public class MainActivityPresenter extends Presenter {
         public String getMessageTag() {
             return "Failed to get followers count: ";
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage("Failed to get followers count: " + message");
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage("Failed to get followers count because of exception: " + ex.getMessage());
-//        }
     }
 
     public void getFollowersCount(User selectedUser) {
@@ -102,16 +82,6 @@ public class MainActivityPresenter extends Presenter {
         public String getMessageTag() {
             return "Failed to get following count: ";
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage("Failed to get following count: " + message);
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage("Failed to get following count because of exception: " + ex.getMessage());
-//        }
     }
 
     public void getFollowingCount(User selectedUser) {
@@ -129,16 +99,6 @@ public class MainActivityPresenter extends Presenter {
         public String getMessageTag() {
             return "Failed to determine following relationship: ";
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage("Failed to determine following relationship: " + message);
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage("Failed to determine following relationship because of exception: " + ex.getMessage());
-//        }
     }
 
     public void isFollower(User selectedUser) {
@@ -156,16 +116,6 @@ public class MainActivityPresenter extends Presenter {
         public String getMessageTag() {
             return "Failed to follow: ";
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage("Failed to follow: " + message);
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage("Failed to follow because of exception: " + ex.getMessage());
-//        }
     }
 
     public void follow(User selectedUser) {
@@ -183,16 +133,6 @@ public class MainActivityPresenter extends Presenter {
         public String getMessageTag() {
             return "Failed to unfollow: ";
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage("Failed to unfollow: " + message);
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage("Failed to unfollow because of exception: " + ex.getMessage());
-//        }
     }
 
     public void unfollow(User selectedUser) {
@@ -210,16 +150,6 @@ public class MainActivityPresenter extends Presenter {
         public String getMessageTag() {
             return "Failed to post status: ";
         }
-
-//        @Override
-//        public void handleMessage(String message) {
-//            view.displayErrorMessage("Failed to post status: " + message);
-//        }
-//
-//        @Override
-//        public void handleException(Exception ex) {
-//            view.displayErrorMessage("Failed to post status because of exception: " + ex.getMessage());
-//        }
     }
 
     public void postStatus(Status newStatus) {

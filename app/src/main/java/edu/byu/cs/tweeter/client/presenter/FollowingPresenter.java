@@ -5,7 +5,7 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class FollowingPresenter extends PagedPresenter<User>{
+public class FollowingPresenter extends PagedPresenter<User> {
     private FollowService followService;
 
     public FollowingPresenter(View view) {

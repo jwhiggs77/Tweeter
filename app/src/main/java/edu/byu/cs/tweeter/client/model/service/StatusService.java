@@ -13,9 +13,6 @@ import edu.byu.cs.tweeter.client.model.service.handler.observer.SimpleNotificati
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class StatusService {
 
     public void postStatus(Status newStatus, SimpleNotificationObserver postStatusObserver) {

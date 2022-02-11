@@ -9,6 +9,7 @@ import edu.byu.cs.tweeter.model.domain.User;
 import java.util.List;
 
 public abstract class PagedPresenter<T> extends Presenter {
+
     public interface View<T> extends Presenter.View {
         void setLoadingStatus(boolean value);
 
@@ -98,5 +99,4 @@ public abstract class PagedPresenter<T> extends Presenter {
     public void getUser(String userAlias) {
         userService.getUser(Cache.getInstance().getCurrUserAuthToken(), userAlias, new GetUserObserver());
     }
-
 }

@@ -15,11 +15,13 @@ public class StoryPresenter extends PagedPresenter<Status> {
 
     @Override
     public void getItems(AuthToken authToken, User user, int pageSize, Status lastItem) {
-        statusService.getStory(user, pageSize, lastItem, new GetListObserver());
+        statusService.getStory(user, pageSize, lastItem, new GetStoryObserver());
     }
 
-    @Override
-    public String getMessageTag() {
-        return "Failed to get story: ";
+    public class GetStoryObserver extends GetListObserver {
+        @Override
+        public String getMessageTag() {
+            return "Failed to get story: ";
+        }
     }
 }

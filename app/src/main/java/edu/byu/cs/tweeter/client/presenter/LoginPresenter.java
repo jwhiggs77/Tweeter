@@ -1,41 +1,18 @@
 package edu.byu.cs.tweeter.client.presenter;
 
 import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.client.model.service.handler.observer.AuthenticateObserver;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
 
-public class LoginPresenter {
-
-    public interface View {
-        void displayErrorMessage(String message);
-
-        void startActivity(User loggedInUser, AuthToken authToken);
-    }
-
-    private View view;
-    private UserService userService;
+public class LoginPresenter extends AuthenticatePresenter {
 
     public LoginPresenter(View view) {
         this.view = view;
         userService = new UserService();
     }
 
-    public class LoginObserver implements AuthenticateObserver {
-
+    public class LoginObserver extends AuthenticateObserver {
         @Override
-        public void handleSuccess(User loggedInUser, AuthToken authToken) {
-            view.startActivity(loggedInUser, authToken);
-        }
-
-        @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to login: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to login because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to login: ";
         }
     }
 
@@ -44,15 +21,6 @@ public class LoginPresenter {
     }
 
     public void validateLogin(String alias, String password) {
-        if (alias.charAt(0) != '@') {
-            throw new IllegalArgumentException("Alias must begin with @.");
-        }
-        if (alias.length() < 2) {
-            throw new IllegalArgumentException("Alias must contain 1 or more characters after the @.");
-        }
-        if (password.length() == 0) {
-            throw new IllegalArgumentException("Password cannot be empty.");
-        }
+        validate(alias, password);
     }
-
 }

@@ -2,41 +2,18 @@ package edu.byu.cs.tweeter.client.presenter;
 
 import android.widget.ImageView;
 import edu.byu.cs.tweeter.client.model.service.UserService;
-import edu.byu.cs.tweeter.client.model.service.handler.observer.AuthenticateObserver;
-import edu.byu.cs.tweeter.model.domain.AuthToken;
-import edu.byu.cs.tweeter.model.domain.User;
 
-public class RegisterPresenter {
-
-    public interface View {
-        void displayErrorMessage(String message);
-
-        void startActivity(User loggedInUser, AuthToken authToken);
-    }
-
-    private View view;
-    private UserService userService;
+public class RegisterPresenter extends AuthenticatePresenter {
 
     public RegisterPresenter(View view) {
         this.view = view;
         userService = new UserService();
     }
 
-    public class RegisterObserver implements AuthenticateObserver {
-
+    public class RegisterObserver extends AuthenticateObserver {
         @Override
-        public void handleSuccess(User registeredUser, AuthToken authToken) {
-            view.startActivity(registeredUser, authToken);
-        }
-
-        @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to register: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to register because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to register: ";
         }
     }
 
@@ -54,18 +31,9 @@ public class RegisterPresenter {
         if (alias.length() == 0) {
             throw new IllegalArgumentException("Alias cannot be empty.");
         }
-        if (alias.charAt(0) != '@') {
-            throw new IllegalArgumentException("Alias must begin with @.");
-        }
-        if (alias.length() < 2) {
-            throw new IllegalArgumentException("Alias must contain 1 or more characters after the @.");
-        }
-        if (password.length() == 0) {
-            throw new IllegalArgumentException("Password cannot be empty.");
-        }
-
         if (imageToUpload.getDrawable() == null) {
             throw new IllegalArgumentException("Profile image must be uploaded.");
         }
+        validate(alias, password);
     }
 }

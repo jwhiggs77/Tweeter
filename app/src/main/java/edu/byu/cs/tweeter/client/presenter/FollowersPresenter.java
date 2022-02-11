@@ -14,11 +14,13 @@ public class FollowersPresenter extends PagedPresenter<User> {
 
     @Override
     public void getItems(AuthToken authToken, User user, int pageSize, User lastFollower) {
-        followService.getFollowers(authToken, user, pageSize, lastFollower, new GetListObserver());
+        followService.getFollowers(authToken, user, pageSize, lastFollower, new GetFollowersObserver());
     }
 
-    @Override
-    public String getMessageTag() {
-        return "Failed to get followers";
+    public class GetFollowersObserver extends GetListObserver {
+        @Override
+        public String getMessageTag() {
+            return "Failed to get followers: ";
+        }
     }
 }

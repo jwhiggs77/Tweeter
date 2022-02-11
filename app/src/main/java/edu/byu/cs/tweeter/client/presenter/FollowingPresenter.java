@@ -15,11 +15,13 @@ public class FollowingPresenter extends PagedPresenter<User>{
 
     @Override
     public void getItems(AuthToken authToken, User user, int pageSize, User lastItem) {
-        followService.getFollowing(Cache.getInstance().getCurrUserAuthToken(), user, pageSize, lastItem, new GetListObserver());
+        followService.getFollowing(Cache.getInstance().getCurrUserAuthToken(), user, pageSize, lastItem, new GetFollowersObserver());
     }
 
-    @Override
-    public String getMessageTag() {
-        return "Failed to get following";
+    public class GetFollowersObserver extends GetListObserver {
+        @Override
+        public String getMessageTag() {
+            return "Failed to get following: ";
+        }
     }
 }

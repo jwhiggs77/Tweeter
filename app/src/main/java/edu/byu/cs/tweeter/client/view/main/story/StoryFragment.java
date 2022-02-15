@@ -112,9 +112,14 @@ public class StoryFragment extends Fragment implements StoryPresenter.View {
     }
 
     @Override
-    public void addItems(List<Status> statuses) {
-        storyRecyclerViewAdapter.addItems(statuses);
+    public void addItemList(List items) {
+        storyRecyclerViewAdapter.addItems(items);
     }
+
+//    @Override
+//    public void addItems(List<Status> statuses) {
+//        storyRecyclerViewAdapter.addItems(statuses);
+//    }
 
     /**
      * The ViewHolder for the RecyclerView that displays the story data.

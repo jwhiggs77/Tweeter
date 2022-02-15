@@ -96,6 +96,13 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
     }
 
     @Override
+    public void startActivity(User user) {
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
+        startActivity(intent);
+    }
+
+    @Override
     public void setLoadingStatus(boolean loading) {
         if (loading) {
             feedRecyclerViewAdapter.addLoadingFooter();
@@ -105,16 +112,14 @@ public class FeedFragment extends Fragment implements FeedPresenter.View {
     }
 
     @Override
-    public void startActivity(User user) {
-        Intent intent = new Intent(getContext(), MainActivity.class);
-        intent.putExtra(MainActivity.CURRENT_USER_KEY, user);
-        startActivity(intent);
+    public void addItemList(List items) {
+        feedRecyclerViewAdapter.addItems(items);
     }
 
-    @Override
-    public void addItems(List<Status> statuses) {
-        feedRecyclerViewAdapter.addItems(statuses);
-    }
+//    @Override
+//    public void addItems(List<Status> statuses) {
+//        feedRecyclerViewAdapter.addItems(statuses);
+//    }
 
     /**
      * The ViewHolder for the RecyclerView that displays the feed data.

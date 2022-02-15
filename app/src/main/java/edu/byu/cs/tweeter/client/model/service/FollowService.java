@@ -10,40 +10,29 @@ import edu.byu.cs.tweeter.client.model.service.handler.observer.SimpleNotificati
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 public class FollowService {
 
     public void getFollowing(AuthToken currUserAuthToken, User user, int pageSize, User lastFollowee, PagedNotificationObserver<User> getFollowingObserver) {
         GetFollowingTask getFollowingTask = new GetFollowingTask(currUserAuthToken,
                 user, pageSize, lastFollowee, new GetFollowingHandler(getFollowingObserver));
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        executor.execute(getFollowingTask);
         BackgroundTaskUtils.runTask(getFollowingTask);
     }
 
     public void getFollowers(AuthToken currUserAuthToken, User user, int pageSize, User lastFollowee, PagedNotificationObserver<User> getFollowersObserver) {
         GetFollowersTask getFollowersTask = new GetFollowersTask(currUserAuthToken,
                 user, pageSize, lastFollowee, new GetFollowersHandler(getFollowersObserver));
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        executor.execute(getFollowersTask);
         BackgroundTaskUtils.runTask(getFollowersTask);
     }
 
     public void follow(User selectedUser, SimpleNotificationObserver followObserver) {
         FollowTask followTask = new FollowTask(Cache.getInstance().getCurrUserAuthToken(),
                 selectedUser, new SimpleNotificationHandler(followObserver));
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        executor.execute(followTask);
         BackgroundTaskUtils.runTask(followTask);
     }
 
     public void unfollow(User selectedUser, SimpleNotificationObserver unfollowObserver) {
         UnfollowTask unfollowTask = new UnfollowTask(Cache.getInstance().getCurrUserAuthToken(),
                 selectedUser, new SimpleNotificationHandler(unfollowObserver));
-//        ExecutorService executor = Executors.newSingleThreadExecutor();
-//        executor.execute(unfollowTask);
         BackgroundTaskUtils.runTask(unfollowTask);
     }
 }

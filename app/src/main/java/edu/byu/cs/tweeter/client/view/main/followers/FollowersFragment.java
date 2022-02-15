@@ -98,9 +98,14 @@ public class FollowersFragment extends Fragment implements FollowersPresenter.Vi
     }
 
     @Override
-    public void addFollowers(List<User> followers) {
-        followersRecyclerViewAdapter.addItems(followers);
+    public void addItemList(List items) {
+        followersRecyclerViewAdapter.addItems(items);
     }
+
+//    @Override
+//    public void addFollowList(List<User> followers) {
+//        followersRecyclerViewAdapter.addItems(followers);
+//    }
 
     @Override
     public void startActivity(User user) {

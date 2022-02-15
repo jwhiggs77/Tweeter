@@ -3,7 +3,6 @@ package edu.byu.cs.tweeter.client.model.service.handler;
 import android.os.Bundle;
 import edu.byu.cs.tweeter.client.model.service.backgroundTask.LoginTask;
 import edu.byu.cs.tweeter.client.model.service.handler.observer.AuthenticateObserver;
-import edu.byu.cs.tweeter.client.model.service.handler.observer.ServiceObserver;
 import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 

@@ -4,19 +4,16 @@ import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
 import edu.byu.cs.tweeter.client.model.service.handler.observer.GetCountObserver;
-import edu.byu.cs.tweeter.client.model.service.handler.observer.IsFollowerObserver;
 import edu.byu.cs.tweeter.client.model.service.handler.observer.SimpleNotificationObserver;
 import edu.byu.cs.tweeter.model.domain.Status;
 import edu.byu.cs.tweeter.model.domain.User;
 
-public class MainActivityPresenter {
+public class MainActivityPresenter extends Presenter {
 
-    public interface View {
+    public interface View extends Presenter.View {
         void logout();
 
         void setFollow();
-
-        void displayErrorMessage(String message);
 
         void checkFollower(boolean isFollower);
 
@@ -39,7 +36,7 @@ public class MainActivityPresenter {
         statusService = new StatusService();
     }
 
-    public class LogoutObserver implements SimpleNotificationObserver {
+    public class LogoutObserver extends Observer implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {
@@ -47,13 +44,8 @@ public class MainActivityPresenter {
         }
 
         @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to logout: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to logout because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to logout: ";
         }
     }
 
@@ -61,7 +53,7 @@ public class MainActivityPresenter {
         userService.logout(new LogoutObserver());
     }
 
-    public class GetFollowersCountObserver implements GetCountObserver {
+    public class GetFollowersCountObserver extends Observer implements GetCountObserver {
 
         @Override
         public void handleSuccess(int count) {
@@ -69,13 +61,8 @@ public class MainActivityPresenter {
         }
 
         @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to get followers count: \" + message");
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to get followers count because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to get followers count: ";
         }
     }
 
@@ -83,7 +70,7 @@ public class MainActivityPresenter {
         userService.GetFollowersCount(selectedUser, new GetFollowersCountObserver());
     }
 
-    public class GetFollowingCountObserver implements GetCountObserver {
+    public class GetFollowingCountObserver extends Observer implements GetCountObserver {
 
         @Override
         public void handleSuccess(int count) {
@@ -91,13 +78,8 @@ public class MainActivityPresenter {
         }
 
         @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to get following count: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to get following count because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to get following count: ";
         }
     }
 
@@ -105,7 +87,7 @@ public class MainActivityPresenter {
         userService.GetFollowingCount(selectedUser, new GetFollowingCountObserver());
     }
 
-    public class IsFollowerObserver implements edu.byu.cs.tweeter.client.model.service.handler.observer.IsFollowerObserver {
+    public class IsFollowerObserver extends Observer implements edu.byu.cs.tweeter.client.model.service.handler.observer.IsFollowerObserver {
 
         @Override
         public void handleSuccess(boolean isFollower) {
@@ -113,13 +95,8 @@ public class MainActivityPresenter {
         }
 
         @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to determine following relationship: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to determine following relationship because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to determine following relationship: ";
         }
     }
 
@@ -127,7 +104,7 @@ public class MainActivityPresenter {
         userService.isFollower(selectedUser, new IsFollowerObserver());
     }
 
-    public class FollowObserver implements SimpleNotificationObserver {
+    public class FollowObserver extends Observer implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {
@@ -135,13 +112,8 @@ public class MainActivityPresenter {
         }
 
         @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to follow: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to follow because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to follow: ";
         }
     }
 
@@ -149,7 +121,7 @@ public class MainActivityPresenter {
         followService.follow(selectedUser, new FollowObserver());
     }
 
-    public class UnfollowerObserver implements SimpleNotificationObserver {
+    public class UnfollowerObserver extends Observer implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {
@@ -157,13 +129,8 @@ public class MainActivityPresenter {
         }
 
         @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to unfollow: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to unfollow because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to unfollow: ";
         }
     }
 
@@ -171,7 +138,7 @@ public class MainActivityPresenter {
         followService.unfollow(selectedUser, new UnfollowerObserver());
     }
 
-    public class PostStatusObserver implements SimpleNotificationObserver {
+    public class PostStatusObserver extends Observer implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {
@@ -179,13 +146,8 @@ public class MainActivityPresenter {
         }
 
         @Override
-        public void handleMessage(String message) {
-            view.displayErrorMessage("Failed to post status: " + message);
-        }
-
-        @Override
-        public void handleException(Exception ex) {
-            view.displayErrorMessage("Failed to post status because of exception: " + ex.getMessage());
+        public String getMessageTag() {
+            return "Failed to post status: ";
         }
     }
 

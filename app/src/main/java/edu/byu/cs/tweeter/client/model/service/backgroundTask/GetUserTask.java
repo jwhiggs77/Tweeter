@@ -16,10 +16,6 @@ public class GetUserTask extends AuthenticatedTask {
      * Alias (or handle) for user whose profile is being retrieved.
      */
     private String alias;
-//    /**
-//     * Message handler that will receive task results.
-//     */
-//    private Handler messageHandler;
 
     public GetUserTask(AuthToken authToken, String alias, Handler messageHandler) {
         super(messageHandler, authToken);

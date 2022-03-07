@@ -27,6 +27,7 @@ public abstract class PagedPresenter<T> extends Presenter {
     private UserService userService;
 
     public PagedPresenter(View view) {
+        super(view);
         this.view = view;
         userService = new UserService();
     }
@@ -72,14 +73,14 @@ public abstract class PagedPresenter<T> extends Presenter {
         public void handleMessage(String message) {
             setLoading(false);
             view.setLoadingStatus(isLoading());
-            view.displayErrorMessage(getMessageTag() + message);
+            view.displayMessage(getMessageTag() + message);
         }
 
         @Override
         public void handleException(Exception exception) {
             setLoading(false);
             view.setLoadingStatus(isLoading());
-            view.displayErrorMessage(getMessageTag() + exception.getMessage());
+            view.displayMessage(getMessageTag() + exception.getMessage());
         }
     }
 

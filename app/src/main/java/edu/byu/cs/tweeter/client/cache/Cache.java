@@ -50,4 +50,12 @@ public class Cache {
     public void setCurrUserAuthToken(AuthToken currUserAuthToken) {
         this.currUserAuthToken = currUserAuthToken;
     }
+
+    /**
+     * Used for mocking the cache in testing.
+     * @param instance brings in a Cache instance. Is used to pass in a mocked cache.
+     */
+    public static void setInstance(Cache instance) {
+        Cache.instance = instance;
+    }
 }

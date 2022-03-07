@@ -80,7 +80,7 @@ public class LoginFragment extends Fragment implements LoginPresenter.View {
     }
 
     @Override
-    public void displayErrorMessage(String message) {
+    public void displayMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 

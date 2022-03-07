@@ -1,5 +1,6 @@
 package edu.byu.cs.tweeter.client.presenter;
 
+import edu.byu.cs.tweeter.client.cache.Cache;
 import edu.byu.cs.tweeter.client.model.service.FollowService;
 import edu.byu.cs.tweeter.client.model.service.StatusService;
 import edu.byu.cs.tweeter.client.model.service.UserService;
@@ -30,16 +31,34 @@ public class MainActivityPresenter extends Presenter {
     private StatusService statusService;
 
     public MainActivityPresenter(View view) {
+        super(view);
         this.view = view;
         userService = new UserService();
         followService = new FollowService();
         statusService = new StatusService();
+    }
+     
+
+    public UserService getUserService() {
+        if (userService == null) return new UserService();
+        return userService;
+    }
+
+    public FollowService getFollowService() {
+        if (followService == null) return new FollowService();
+        return followService;
+    }
+
+    public StatusService getStatusService() {
+        if (statusService == null) return new StatusService();
+        return statusService;
     }
 
     public class LogoutObserver extends Observer implements SimpleNotificationObserver {
 
         @Override
         public void handleSuccess() {
+            Cache.getInstance().clearCache();
             view.logout();
         }
 
@@ -50,7 +69,8 @@ public class MainActivityPresenter extends Presenter {
     }
 
     public void logout() {
-        userService.logout(new LogoutObserver());
+//        userService.logout(new LogoutObserver());
+        getUserService().logout(new LogoutObserver());
     }
 
     public class GetFollowersCountObserver extends Observer implements GetCountObserver {
@@ -67,7 +87,8 @@ public class MainActivityPresenter extends Presenter {
     }
 
     public void getFollowersCount(User selectedUser) {
-        userService.GetFollowersCount(selectedUser, new GetFollowersCountObserver());
+//        userService.GetFollowersCount(selectedUser, new GetFollowersCountObserver());
+        getUserService().GetFollowersCount(selectedUser, new GetFollowersCountObserver());
     }
 
     public class GetFollowingCountObserver extends Observer implements GetCountObserver {
@@ -84,7 +105,8 @@ public class MainActivityPresenter extends Presenter {
     }
 
     public void getFollowingCount(User selectedUser) {
-        userService.GetFollowingCount(selectedUser, new GetFollowingCountObserver());
+//        userService.GetFollowingCount(selectedUser, new GetFollowingCountObserver());
+        getUserService().GetFollowingCount(selectedUser, new GetFollowingCountObserver());
     }
 
     public class IsFollowerObserver extends Observer implements edu.byu.cs.tweeter.client.model.service.handler.observer.IsFollowerObserver {
@@ -101,7 +123,8 @@ public class MainActivityPresenter extends Presenter {
     }
 
     public void isFollower(User selectedUser) {
-        userService.isFollower(selectedUser, new IsFollowerObserver());
+//        userService.isFollower(selectedUser, new IsFollowerObserver());
+        getUserService().isFollower(selectedUser, new IsFollowerObserver());
     }
 
     public class FollowObserver extends Observer implements SimpleNotificationObserver {
@@ -118,7 +141,7 @@ public class MainActivityPresenter extends Presenter {
     }
 
     public void follow(User selectedUser) {
-        followService.follow(selectedUser, new FollowObserver());
+        getFollowService().follow(selectedUser, new FollowObserver());
     }
 
     public class UnfollowerObserver extends Observer implements SimpleNotificationObserver {
@@ -135,7 +158,7 @@ public class MainActivityPresenter extends Presenter {
     }
 
     public void unfollow(User selectedUser) {
-        followService.unfollow(selectedUser, new UnfollowerObserver());
+        getFollowService().unfollow(selectedUser, new UnfollowerObserver());
     }
 
     public class PostStatusObserver extends Observer implements SimpleNotificationObserver {
@@ -152,6 +175,6 @@ public class MainActivityPresenter extends Presenter {
     }
 
     public void postStatus(Status newStatus) {
-        statusService.postStatus(newStatus, new PostStatusObserver());
+        getStatusService().postStatus(newStatus, new PostStatusObserver());
     }
 }

@@ -82,7 +82,7 @@ public class FollowingFragment extends Fragment implements FollowingPresenter.Vi
     }
 
     @Override
-    public void displayErrorMessage(String message) {
+    public void displayMessage(String message) {
         Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
     }
 

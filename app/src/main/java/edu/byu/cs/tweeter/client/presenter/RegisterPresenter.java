@@ -6,6 +6,7 @@ import edu.byu.cs.tweeter.client.model.service.UserService;
 public class RegisterPresenter extends AuthenticatePresenter {
 
     public RegisterPresenter(View view) {
+        super(view);
         this.view = view;
         userService = new UserService();
     }

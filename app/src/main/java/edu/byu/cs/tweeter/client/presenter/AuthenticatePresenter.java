@@ -5,6 +5,10 @@ import edu.byu.cs.tweeter.model.domain.AuthToken;
 import edu.byu.cs.tweeter.model.domain.User;
 
 public abstract class AuthenticatePresenter extends Presenter {
+    public AuthenticatePresenter(Presenter.View view) {
+        super(view);
+    }
+
     public interface View extends Presenter.View {
         void startActivity(User user, AuthToken authToken);
     }

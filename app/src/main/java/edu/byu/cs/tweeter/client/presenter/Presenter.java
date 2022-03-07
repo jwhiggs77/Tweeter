@@ -4,10 +4,14 @@ import edu.byu.cs.tweeter.client.model.service.handler.observer.ServiceObserver;
 
 public abstract class Presenter {
     public interface View {
-        void displayErrorMessage(String message);
+        void displayMessage(String message);
     }
 
-    protected View view;
+    private View view;
+
+    public Presenter(View view) {
+        this.view = view;
+    }
 
     public abstract class Observer implements ServiceObserver {
 
@@ -15,12 +19,12 @@ public abstract class Presenter {
 
         @Override
         public void handleMessage(String message) {
-            view.displayErrorMessage(getMessageTag() + message);
+            view.displayMessage(getMessageTag() + message);
         }
 
         @Override
         public void handleException(Exception ex) {
-            view.displayErrorMessage(getMessageTag() + ex.getMessage());
+            view.displayMessage(getMessageTag() + ex.getMessage());
         }
     }
 }
